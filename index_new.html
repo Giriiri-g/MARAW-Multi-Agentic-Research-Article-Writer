@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RWrite</title>
+  <script src="js/onLoad.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style_new.css" />
+</head>
+
+<body>
+  <div id="popup" class="popup closed">
+    <div class="popup-content">
+      <div class="foot">
+        <div class="pg1 page-marker"></div>
+        <div class="pg2 page-marker"></div>
+        <div class="pg3 page-marker"></div>
+      </div>
+    </div>
+  </div>
+  <header>
+    <a href="index.html" id="Home">
+      <img src="images/logo.png" alt="RWrite Logo" class="logo-img" />
+      <span class="text-white font-bold text-xl">RWrite</span>
+    </a>
+    <nav>
+      <a href="index.html" class="nav-link" style="color: #f43c33">Home</a>
+      <a href="index.html#about" class="nav-link">About</a>
+      <button id="contactBtn" class="nav-link" onclick="contactpopup()">
+        Contact Us
+      </button>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+      <a class="nav-link" onclick="trydemo()">Try Demo</a>
+    </nav>
+
+    <div id="authArea">
+      <span id="user-welc"></span>
+      <button id="loginOpenBtn" onclick="loginpopup()">Login</button>
+      <button id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main>
+    <section></section>
+  </main>
+  <footer>
+    © 2025 RWrite. All rights reserved.
+  </footer>
+
+  <div id="login-overlay">
+    <div id="login-body">
+      <div class="login-header">
+        <span class="login-title">Login</span>
+        <button id="login-close" onclick="loginclose()">X</button>
+      </div>
+      <form id="loginForm" novalidate>
+        <div>
+          <div class="form-header" id="username-header"><label for="username">Username</label></div>
+          <input id="username" type="text" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="password-header"><label for="password">Password</label></div>
+          <input id="password" type="password" required class="form-field" />
+        </div>
+        <div class="form-footer">
+          <a href="#">Create New Account?</a>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <div class="submit-btn-wrapper"><button type="submit" class="login-submit">Login</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="contactoverlay">
+    <div id="contactpop">
+      <div class="con-header">
+        <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+        <button type="button" onclick="contactclose()">X</button>
+      </div>
+
+      <form>
+        <div class="mb-4">
+          <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+          <input type="text" class="form-control" id="name1" placeholder="Your name">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+          <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
+          <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+        </div>
+        <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const username = localStorage.getItem("username");
+    if (username) {
+      document.getElementById("user-welc").textContent = `Welcome, ${username}`;
+      document.getElementById("loginOpenBtn").style.display = "none";
+      document.getElementById("logout-btn").style.display = "block";
+      document.getElementById("user-welc").style.display = "block";
+    }
+  </script>
+</body>
+
+</html>

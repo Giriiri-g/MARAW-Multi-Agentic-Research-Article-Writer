@@ -1,0 +1,368 @@
+/* Webkit browsers (Chrome, Safari, Edge Chromium) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* IE 10+ */
+html {
+  -ms-overflow-style: none;
+}
+
+
+body {
+  background: #111;
+  color: #eee;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+
+header {
+  background-color: #1f1f1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+footer {
+  background-color: #1f1f1f;
+  padding: 1rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+#Home{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.logo-img {
+  height: 2rem;
+  width: auto;
+}
+
+/* .plan-card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-card:hover {
+  border-color: #ff5500;
+  box-shadow: 0 8px 16px rgba(255, 85, 0, 0.3);
+} */
+
+.plan-card button {
+  background: #444;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.plan-card:hover button {
+  background-color: #cf2e15;
+  color: #111;
+}
+
+.rate-table th {
+  border-bottom: 1px solid #333;
+}
+
+.rate-table td,
+.rate-table th {
+  padding: 0.75rem 1rem;
+}
+
+#authArea{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+
+#main {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 24px;
+}
+.plans-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.plan-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  transition: all 0.3s ease-in-out;
+}
+.plan-card:hover {
+  border: 1px solid #F43C33;
+  box-shadow: 0 8px 16px #F43C334D;
+}
+.plan-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+.plan-desc {
+  color: #9CA3AF;
+  margin-bottom: 16px;
+}
+.plan-price {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.plan-interval {
+  font-size: 1rem;
+  color: #9CA3AF;
+}
+.plan-features {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  flex: 1;
+  color: #D1D5DB;
+}
+.plan-features li {
+  margin-bottom: 8px;
+}
+.plan-button {
+  margin-top: auto;
+  padding: 8px 0;
+  border-radius: 8px;
+  width: 100%;
+  color: #ffffff;
+  background-color: #2563EB;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+#contactoverlay, #login-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.11);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#contactpop, #login-body {
+  padding: 2%;
+  border-radius: 15px;
+  background-color: #202124;
+  background-image: url("/images/grain.jpeg");
+  background-size: cover;       /* Scales the image to cover the entire div */
+  background-position: center;  /* Centers the image */
+  background-repeat: no-repeat;
+}
+
+.con-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10%;
+  padding-bottom: 3%;
+  border-bottom: 1px solid #848484;
+}
+
+.con-title {
+  color: #f43c33;
+  font-size: 26px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mb-4 {
+  display: flex;
+  flex-direction: column;
+}
+
+
+#name1, #email1, #message1 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: 1px solid #E5E7EB;
+  background-color: rgba(0, 0, 0, 0.11);
+  transition: all 0.2s ease;
+  width: 400px;
+}
+
+#name1:focus, #email1:focus, #message1:focus {
+  border: 1px solid #f43c33;
+  box-shadow: 0 0 16px 6px #f43c331f;
+}
+
+
+#logout-btn{
+  display: none;
+}
+
+#contact-submit, .login-submit, #loginOpenBtn, #logout-btn {
+  background-color: transparent;
+  border: 0.5px solid #f43c33;
+  border-radius: 4px;
+  padding: 8px 8px 8px 8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #f43c33;
+  background-image: linear-gradient(to right, #f43c33 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: right center;
+  transition: background-position 0.4s ease-in-out, color 0.4s ease-in-out;
+}
+
+#contact-submit:hover, .login-submit:hover, #loginOpenBtn:hover, #logout-btn:hover {
+  background-position: left center;
+  color: #111;
+}
+
+.field-header{
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+}
+
+.error-field{
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-link {
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+  display: inline-block;
+  padding: 15px 20px;
+  position: relative;
+}
+
+.nav-link:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #f43c33;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+.nav-link:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+.login-body{
+  display: flex;
+  flex-direction: column;
+}
+
+.login-header{
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #f43c33;
+  padding-bottom: 4%;
+  padding-left: 6%;
+  padding-right: 6%;
+  width: 400px;
+  margin-bottom: 6%;
+}
+
+.login-title{
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+#username, #password{
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: 1px solid #E5E7EB;
+  background-color: rgba(0, 0, 0, 0.11);
+  transition: all 0.2s ease;
+  width: 400px;
+}
+
+#username:focus, #password:focus{
+  border: 1px solid #f43c33;
+  box-shadow: 0 0 16px 6px #f43c331f;
+}
+
+.form-footer{
+  display: flex;
+  justify-content: space-between;
+  color: #848484;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 8%;
+}
+
+.form-footer a{
+  transition: all 0.2s ease-in-out;
+}
+
+.form-footer a:hover{
+  color: #f43c33;
+  font-size: 13px;
+}
+
+.form-field{
+  margin-bottom: 8% !important;
+}
+
+.form-header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-btn-wrapper{
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

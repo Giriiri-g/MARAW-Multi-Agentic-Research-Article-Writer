@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>RWrite • Plans & Limits</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/validation.js"></script>
+  <link rel="stylesheet" href="css/pricing.css">
+</head>
+
+<body>
+  <header>
+    <a href="index.html" id="Home">
+      <img src="images/logo.png" alt="RWrite Logo" class="logo-img" />
+      <span class="text-white font-bold text-xl">RWrite</span>
+    </a>
+  
+    <nav>
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="index.html#about" class="nav-link">About</a>
+      <button id="contactBtn" class="nav-link" onclick="contactpopup()">Contact Us</button>
+      <a href="pricing.html" class="nav-link" style="color: #f43c33;">Pricing</a>
+      <a class="nav-link" onclick="trydemo()">Try Demo</a>
+    </nav>
+  
+    <div id="authArea">
+      <span id="user-welc"></span>
+      <button id="loginOpenBtn" onclick="loginpopup()">Login</button>
+      <button id="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <div class="plans-container">
+      <div class="plan-card" id="plan-free">
+        <h3 class="plan-title">Free</h3>
+        <p class="plan-desc">Forever free, perfect to explore RWrite</p>
+        <span class="plan-price">$0<span class="plan-interval">/mo</span></span>
+        <ul class="plan-features">
+          <li>1,000 tokens / mo</li>
+          <li>Single‑column format</li>
+          <li>Community support</li>
+          <li>Basic citation mining</li>
+        </ul>
+        <button class="plan-button">Select Free</button>
+      </div>
+  
+      <div class="plan-card" id="plan-student">
+        <h3 class="plan-title">Research Student</h3>
+        <p class="plan-desc">For academics & grad students</p>
+        <span class="plan-price">$19<span class="plan-interval">/mo</span></span>
+        <ul class="plan-features">
+          <li>100,000 tokens / mo</li>
+          <li>Double‑column & IEEE/Springer</li>
+          <li>Priority email support</li>
+          <li>Advanced citation & formatting</li>
+        </ul>
+        <button class="plan-button">Select Student</button>
+      </div>
+  
+      <div class="plan-card" id="plan-enterprise">
+        <h3 class="plan-title">Enterprise</h3>
+        <p class="plan-desc">Custom solutions for teams</p>
+        <span class="plan-price">Contact<span class="plan-interval"> Us</span></span>
+        <ul class="plan-features">
+          <li>Custom token quotas</li>
+          <li>API & SSO integration</li>
+          <li>Dedicated support & SLA</li>
+          <li>On‑prem or cloud hosting</li>
+        </ul>
+        <button class="plan-button" onclick="contactpopup()">Contact Sales</button>
+      </div>
+    </div>
+  </main>
+
+  <section class="px-6 pb-12">
+    <h2 class="text-2xl font-bold mb-4">Rate Limits & Quotas</h2>
+    <div class="overflow-x-auto">
+      <table class="rate-table w-full text-left table-auto">
+        <thead>
+          <tr>
+            <th class="text-gray-300">Parameter</th>
+            <th class="text-gray-300">Free</th>
+            <th class="text-gray-300">Student</th>
+            <th class="text-gray-300">Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Max Context Window</td>
+            <td>8K tokens</td>
+            <td>32K tokens</td>
+            <td>64K+ tokens</td>
+          </tr>
+          <tr>
+            <td>Requests / Minute</td>
+            <td>10 RPM</td>
+            <td>60 RPM</td>
+            <td>Custom</td>
+          </tr>
+          <tr>
+            <td>Document Upload Size</td>
+            <td>1 MB</td>
+            <td>10 MB</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Concurrent Streams</td>
+            <td>1</td>
+            <td>5</td>
+            <td>Custom</td>
+          </tr>
+          <tr>
+            <td>Monthly Usage Cap</td>
+            <td>1,000 tokens</td>
+            <td>100,000 tokens</td>
+            <td>Custom</td>
+          </tr>
+          <tr>
+            <td>Plagiarism Checks / Day</td>
+            <td>50</td>
+            <td>500</td>
+            <td>Custom</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 RWrite. All rights reserved.
+  </footer>
+
+  <div id="login-overlay">
+    <div id="login-body">
+      <div class="login-header">
+        <span class="login-title">Login</span>
+        <button id="login-close" onclick="loginclose()">X</button>
+      </div>
+        <form id="loginForm" novalidate>
+          <div>
+            <div class="form-header" id="username-header"><label for="username">Username</label></div>
+            <input id="username" type="text" required class="form-field"/>
+          </div>
+          <div>
+            <div class="form-header" id="password-header"><label for="password">Password</label></div>
+            <input id="password" type="password" required class="form-field"/>
+          </div>
+          <div class="form-footer">
+            <a href="#">Create New Account?</a>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <div class="submit-btn-wrapper"><button type="submit" class="login-submit">Login</button></div>
+        </form>
+    </div>
+  </div>
+
+  <div id="contactoverlay">
+    <div id="contactpop">
+        <div class="con-header">
+          <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+          <button type="button" onclick="contactclose()">X</button>
+        </div>
+
+          <form>
+            <div class="mb-4">
+                <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+                <input type="text" class="form-control" id="name1" placeholder="Your name">
+            </div>
+            <div class="mb-4">
+              <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+                <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+            </div>
+            <div class="mb-4">
+              <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
+                <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+            </div>
+            <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+        </form>
+    </div>
+  </div>  
+  
+  <script>
+    const username = localStorage.getItem("username");
+    if (username) {
+      document.getElementById("user-welc").textContent = `Welcome, ${username}`;
+      document.getElementById("loginOpenBtn").style.display = "none";
+      document.getElementById("logout-btn").style.display = "block";
+      document.getElementById("user-welc").style.display = "block";
+    }
+  </script>
+</body>
+
+</html>

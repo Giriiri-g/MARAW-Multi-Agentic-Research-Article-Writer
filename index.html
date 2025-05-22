@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>RWrite</title>
+
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet" />
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/responsive.css" rel="stylesheet" />
+  <script src="js/validation.js"></script>
+</head>
+
+<body>
+  <div class="hero_area">
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container">
+          <a class="navbar-brand" href="index.html">
+            <img src="images/logo.png" alt="" />
+            <span> RWrite </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="nav-link-wrapper">
+              <a href="index.html" class="nav-link" style="color: #f43c33;">Home</a>
+              <a href="index.html#about" class="nav-link">About</a>
+              <a href="#" class="nav-link" onclick="contactpopup()">Contact Us</a>
+              <a href="pricing.html" class="nav-link">Pricing</a>
+              <a href="#" class="nav-link" onclick="trydemo()">Try Demo</a>
+            </div>
+            <div class="user_option" id="authArea">
+              <span id="user-welc"></span>
+              <button id="loginOpenBtn" onclick="loginpopup()">Login</button>
+              <button id="logout-btn" onclick="logout()">Logout</button>
+            </div>
+          </div>
+          <div>
+            <div class="custom_menu-btn">
+              <button>
+                <span class="s-1"> </span>
+                <span class="s-2"> </span>
+                <span class="s-3"> </span>
+              </button>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <section class="slider_section" id="#home">
+      <div class="carousel_btn-container">
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active">
+            01
+          </li>
+          <li data-target="#carouselExampleIndicators" data-slide-to="1">
+            02
+          </li>
+        </ol>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-5 offset-md-1">
+                  <div class="detail-box">
+                    <h1>
+                      Effortless Research <br />
+                      Writing Powered by AI <br />
+                    </h1>
+                    <p id="typed">
+                      Streamline your research workflow with an intelligent
+                      multi-agent system. From structuring your paper and
+                      mining citations to drafting content, reviewing, and
+                      formatting
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1"> About Us </a>
+                      <a href="demo.html" class="btn-2"> Try a Demo </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="offset-md-1 col-md-4 img-container">
+                  <div class="img-box">
+                    <img src="images/slider-img.png" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-5 offset-md-1">
+                  <div class="detail-box">
+                    <h1>Agentic AI for Effortless Research Writing</h1>
+                    <p id="typed1">
+                      Our agentic AI team works collaboratively to help you
+                      publish faster and smarter.
+                    </p>
+                    <div class="btn-box">
+                      <a href="#about" class="btn-1"> About Us </a>
+                      <a href="demo.html" class="btn-2"> Try a Demo </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="offset-md-1 col-md-4 img-container">
+                  <div class="img-box">
+                    <img src="images/slider-img.png" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="experience_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <div class="img-box">
+            <img src="/images/Book and Pen.png" alt="" />
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>Transforming Research Writing with AI Precision</h2>
+            </div>
+            <p>
+              We are an innovative platform dedicated to simplifying the
+              research writing process using advanced AI technology. Whether
+              you're a student, academic, or professional, our tools assist
+              with idea generation, drafting, editing, and
+              formatting—streamlining your journey from concept to polished
+              paper. Our mission is to make high-quality research accessible
+              and achievable for everyone, with a focus on accuracy, clarity,
+              and efficiency.
+            </p>
+            <div class="btn-box">
+              <a href="#about" class="btn-1"> Read More </a>
+              <a href="pricing.html" class="btn-2"> Pricing </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="category_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>Tools</h2>
+      </div>
+      <div class="category_container">
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c1n.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>Multi-Agent System</h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c2n.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>Hosting</h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c3n2.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>LLM Sandbox</h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c4n.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>Citation Miner</h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c5n.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>Format Structurer</h5>
+          </div>
+        </div>
+        <div class="box">
+          <div class="img-box">
+            <img src="images/c6n.png" alt="" class="tool-img" />
+          </div>
+          <div class="detail-box">
+            <h5>Grammer and Plagiarism Watchdog</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-lg-9 mx-auto">
+          <div class="img-box">
+            <img src="images/about-img.jpg" alt="" id="about" />
+          </div>
+        </div>
+      </div>
+      <div class="detail-box">
+        <h2>About RWrite</h2>
+        <p>
+          <strong>RWrite</strong> is an agentic AI platform that automates
+          research paper writing through a team of intelligent, task-specific
+          agents working collaboratively. From structuring and drafting to
+          citation, formatting, and review, each agent plays a specialized
+          role. Designed to streamline academic writing, RWrite helps
+          researchers focus on ideas — while the AI handles the rest.
+        </p>
+        <p id="moreContent" style="display: none">
+          RWrite is powered by the <strong>Groq Cloud Console</strong> for
+          ultra-fast inference and built using the
+          <strong>CrewAI framework</strong> to coordinate a multi-agent
+          system. It integrates open-source language models like
+          <strong>LLaMA</strong> and <strong>Mistral</strong> for specialized
+          language generation tasks. Developed by a team of AI researchers and
+          engineers, RWrite brings intelligent collaboration to every stage of
+          the research pipeline.
+        </p>
+        <a href="#" onclick="toggleReadMore(); return false;" id="readMoreLink">
+          Read More ↓
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="freelance_section">
+    <div id="accordion">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-5 offset-md-1">
+            <div class="detail-box">
+              <div class="heading_container">
+                <h2>Work RWrite Has Done</h2>
+              </div>
+              <div class="tab_container">
+                <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                  aria-controls="collapseOne">
+                  <div class="img-box">
+                    <img src="images/f1.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <h5>2 Million</h5>
+                    <h3>Paid Users</h3>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="false" aria-controls="collapseTwo">
+                  <div class="img-box">
+                    <img src="images/f2.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <h5>250 Million</h5>
+                    <h3>Papers Written</h3>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  <div class="img-box">
+                    <img src="images/f3.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <h5>10 Million</h5>
+                    <h3>Researchers Helped</h3>
+                  </div>
+                </div>
+                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour"
+                  aria-expanded="false" aria-controls="collapseFour">
+                  <div class="img-box">
+                    <img src="images/f4.png" alt="" />
+                  </div>
+                  <div class="detail-box">
+                    <h5>98%</h5>
+                    <h3>
+                      Customer <br />
+                      Satisfaction Rate
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="collapse show" id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="img-box">
+                <img src="images/freelance-img.jpg" alt="" />
+              </div>
+            </div>
+            <div class="collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="img-box">
+                <img src="images/freelance-img.jpg" alt="" />
+              </div>
+            </div>
+            <div class="collapse" id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="img-box">
+                <img src="images/freelance-img.jpg" alt="" />
+              </div>
+            </div>
+            <div class="collapse" id="collapseFour" aria-labelledby="headingfour" data-parent="#accordion">
+              <div class="img-box">
+                <img src="images/freelance-img.jpg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="client_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-9 col-md-10 mx-auto">
+          <div class="heading_container">
+            <h2>Testimonial</h2>
+          </div>
+          <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="detail-box">
+                  <h4>Girish</h4>
+                  <p>
+                    RWrite helped me complete a full research draft in days
+                    instead of weeks. The agentic workflow felt like having a
+                    personal research team.
+                  </p>
+                  <img src="images/quote.png" alt="" />
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="detail-box">
+                  <h4>Harish</h4>
+                  <p>
+                    From citation formatting to paraphrasing and proofreading,
+                    RWrite’s agents handled the grunt work so I could focus on
+                    the science.
+                  </p>
+                  <img src="images/quote.png" alt="" />
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="detail-box">
+                  <h4>Shanks</h4>
+                  <p>
+                    I was skeptical at first, but RWrite’s multi-agent system
+                    actually caught logical gaps and improved my flow better
+                    than human reviewers.
+                  </p>
+                  <img src="images/quote.png" alt="" />
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next"
+              onclick="typer()">
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info_section">
+    <div class="info_container layout_padding-top">
+      <div class="container">
+        <div class="info_top">
+          <div class="info_logo">
+            <img src="images/logo.png" alt="" />
+            <span> RWrite </span>
+          </div>
+          <div class="social_box">
+            <a href="#">
+              <img src="images/fb.png" alt="" />
+            </a>
+            <a href="#">
+              <img src="images/twitter.png" alt="" />
+            </a>
+            <a href="https://www.linkedin.com/in/girish-giriirig/">
+              <img src="images/linkedin.png" alt="" />
+            </a>
+            <a href="#">
+              <img src="images/instagram.png" alt="" />
+            </a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUJcmljayByb2xs">
+              <img src="images/youtube.png" alt="" />
+            </a>
+          </div>
+        </div>
+
+        <div class="info_main">
+          <div class="row">
+
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Useful Links</h5>
+                <ul>
+                  <li class="active">
+                    <a href="index.html">Home <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li><a href="#about">About</a></li>
+                  <li><a href="demo.html">How It Works</a></li>
+                  <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+              </div>
+            </div>
+
+
+            <div class="col-md-3">
+              <h5>Contact</h5>
+              <p>
+                RWrite is built by AI engineering students with a vision to
+                revolutionize research writing.<br />
+                Reach us at:
+                <a href="mailto:giri090205@gmail.com" class="mailto">giri090205@gmail.com</a><br />
+                <a href="mailto:harishankarnair17@gmail.com" class="mailto">harishankarnair17@gmail.com</a><br />
+                Location: Amrita Vishwa Vidyapeetham, India
+              </p>
+            </div>
+
+
+            <div class="col-md-3 col-lg-2 offset-lg-1">
+              <h5>About RWrite</h5>
+              <p>
+                RWrite leverages Agentic AI to help researchers generate
+                structured, high-quality papers. Built with CrewAI, Groq
+                Cloud, and powered by open-source LLMs like LLaMA and Mistral.
+              </p>
+            </div>
+
+
+            <div class="col-md-3 offset-lg-1">
+              <div class="info_form">
+                <h5>Newsletter</h5>
+                <form id="newsletterForm">
+                  <input type="email" id="newsletterEmail" placeholder="Your Email" required />
+                  <button type="submit">Subscribe</button>
+                  <p id="newsletterError" style="color: red; font-size: small; display: none"></p>
+                </form>
+                <small style="color: #bbb">Get the latest features and research tools delivered to
+                  your inbox.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <footer class="container-fluid footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayDate"></span> All Rights Reserved By
+        <a href="https://www.linkedin.com/in/girish-giriirig/">Girish</a> and
+        <a href="https://www.linkedin.com/in/harishankar-bn/">Harishankar</a>
+      </p>
+    </div>
+  </footer>
+
+  <div id="login-overlay">
+    <div id="login-body">
+      <div class="login-header">
+        <span class="login-title">Login</span>
+        <button id="login-close" onclick="loginclose()">X</button>
+      </div>
+        <form id="loginForm" novalidate>
+          <div>
+            <div class="form-header" id="username-header"><label for="username">Username</label></div>
+            <input id="username" type="text" required class="form-field"/>
+          </div>
+          <div>
+            <div class="form-header" id="password-header"><label for="password">Password</label></div>
+            <input id="password" type="password" required class="form-field"/>
+          </div>
+          <div class="form-footer">
+            <a href="#">Create New Account?</a>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <div class="submit-btn-wrapper"><button type="submit" class="login-submit">Login</button></div>
+        </form>
+    </div>
+  </div>
+
+  <div id="contactoverlay">
+    <div id="contactpop">
+        <div class="con-header">
+          <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+          <button type="button" onclick="contactclose()">X</button>
+        </div>
+
+          <form>
+            <div class="mb-4">
+                <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+                <input type="text" class="form-control" id="name1" placeholder="Your name">
+            </div>
+            <div class="mb-4">
+              <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+                <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+            </div>
+            <div class="mb-4">
+              <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
+                <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+            </div>
+            <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+        </form>
+    </div>
+  </div>
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/custom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.x/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
