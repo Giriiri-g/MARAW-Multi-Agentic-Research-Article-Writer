@@ -1,0 +1,378 @@
+parse_user_input:
+  description: >
+    Parse the user's raw input (topic, journal name, abstract/title if provided)
+    into a structured JSON object with fields: topic, journal, abstract, title.
+  expected_output: >
+    A JSON object with keys "topic", "journal", "abstract", and "title".
+  agent: Planner
+
+fetch_journal_guidelines:
+  description: >
+    Retrieve the target journal’s formatting rules and template metadata
+    (e.g., LaTeX class, section order, word limits).
+  expected_output: >
+    A JSON object containing template_url, sections list, and word limit map.
+  agent: Planner
+  tools:
+    - journal_guidelines_api
+
+clean_template:
+  description: >
+    Download the raw template from template_url, strip placeholders,
+    and produce a clean working LaTeX file.
+  expected_output: >
+    A file named clean_template.tex containing the cleaned template.
+  agent: Planner
+  output_file: clean_template.tex
+
+generate_section_outline:
+  description: >
+    Based on parsed input and journal guidelines, produce a section-by‑section outline
+    with target word counts and dependencies.
+  expected_output: >
+    A JSON array of objects {section, target_words, dependencies}.
+  agent: Planner
+  tools:
+    - llm
+
+define_task_flow:
+  description: >
+    Emit a mapping from each section name to the sequence of subtasks and agents
+    responsible for drafting, citation, review, and formatting.
+  expected_output: >
+    A JSON object like {"Introduction": ["draft_introduction","evaluate_section_clarity"], …}.
+  agent: Planner
+
+generate_title:
+  description: >
+    If the user did not provide a title, generate a concise descriptive title
+    from the topic and abstract.
+  expected_output: >
+    A single string suitable as the paper title.
+  agent: ContentGenerator
+  tools:
+    - llm
+
+generate_abstract:
+  description: >
+    If missing, write a 150–250‑word abstract summarizing the problem, method,
+    contributions, and results.
+  expected_output: >
+    A 150–250‑word string serving as the paper abstract.
+  agent: ContentGenerator
+  tools:
+    - llm
+
+draft_introduction:
+  description: >
+    Draft the Introduction section using the outline, abstract, and citation mapping.
+  expected_output: >
+    A markdown‑formatted section titled "Introduction".
+  agent: ContentGenerator
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+    - map_citations_to_sections
+  markdown: true
+
+draft_related_work:
+  description: >
+    Summarize related literature and integrate inline citations appropriately.
+  expected_output: >
+    A markdown‑formatted section titled "Related Work".
+  agent: ContentGenerator
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+    - map_citations_to_sections
+  markdown: true
+
+draft_methodology:
+  description: >
+    Describe datasets, experimental setup, and algorithms in academic tone.
+  expected_output: >
+    A markdown‑formatted section titled "Methodology".
+  agent: ContentGenerator
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+    - map_citations_to_sections
+  markdown: true
+
+draft_results_discussion:
+  description: >
+    Present results with placeholders for tables/figures and discuss their implications.
+  expected_output: >
+    A markdown‑formatted section titled "Results & Discussion".
+  agent: ContentGenerator
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+    - map_citations_to_sections
+  markdown: true
+
+draft_conclusion:
+  description: >
+    Recap contributions, limitations, and future work in a concluding section.
+  expected_output: >
+    A markdown‑formatted section titled "Conclusion".
+  agent: ContentGenerator
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+  markdown: true
+
+embed_inline_citations:
+  description: >
+    Insert citation markers (e.g., [1], (Smith et al. 2023)) in each draft section
+    according to the citation mapping.
+  expected_output: >
+    Updated markdown sections with inline citations.
+  agent: ContentGenerator
+  context:
+    - draft_introduction
+    - draft_related_work
+    - draft_methodology
+    - draft_results_discussion
+    - draft_conclusion
+    - map_citations_to_sections
+  markdown: true
+
+query_literature:
+  description: >
+    Query external APIs with topic keywords and section contexts
+    to retrieve candidate papers.
+  expected_output: >
+    A list of paper metadata and abstracts.
+  agent: CitationManager
+  tools:
+    - search_api
+  context:
+    - parse_user_input
+    - generate_section_outline
+
+extract_citation_metadata:
+  description: >
+    From the search results, extract title, authors, year, DOI, and BibTeX entries.
+  expected_output: >
+    A list of BibTeX entries with complete metadata.
+  agent: CitationManager
+  tools:
+    - bibtex_tool
+  context:
+    - query_literature
+
+rank_filter_references:
+  description: >
+    Score and select the top K references per section based on relevance.
+  expected_output: >
+    A filtered list of citation keys and metadata.
+  agent: CitationManager
+  context:
+    - extract_citation_metadata
+
+generate_bibtex_file:
+  description: >
+    Compile the selected references into a .bib file for later formatting.
+  expected_output: >
+    A file named references.bib
+  agent: CitationManager
+  output_file: references.bib
+
+map_citations_to_sections:
+  description: >
+    Create a mapping from citation keys to the sections where they belong.
+  expected_output: >
+    A JSON object mapping section names to citation key lists.
+  agent: CitationManager
+  context:
+    - rank_filter_references
+    - generate_section_outline
+
+evaluate_section_clarity:
+  description: >
+    Assess each draft section for readability, coherence, and academic style.
+  expected_output: >
+    A JSON report with clarity scores and comments per section.
+  agent: Critic
+  tools:
+    - llm
+  context:
+    - draft_introduction
+    - draft_related_work
+    - draft_methodology
+    - draft_results_discussion
+    - draft_conclusion
+
+check_logical_flow:
+  description: >
+    Verify that arguments flow logically within and between sections.
+  expected_output: >
+    A JSON report listing any logical gaps or redundancies.
+  agent: Critic
+  tools:
+    - llm
+  context:
+    - evaluate_section_clarity
+
+verify_citation_coverage:
+  description: >
+    Detect unsupported claims and flag where citations are needed.
+  expected_output: >
+    A JSON report of citation gaps per section.
+  agent: Critic
+  tools:
+    - llm
+  context:
+    - evaluate_section_clarity
+    - map_citations_to_sections
+
+suggest_expansion_reduction:
+  description: >
+    Recommend adding or trimming content to meet word counts and improve focus.
+  expected_output: >
+    A JSON report of suggested edits per section.
+  agent: Critic
+  tools:
+    - llm
+  context:
+    - generate_section_outline
+    - evaluate_section_clarity
+
+emit_critique_report:
+  description: >
+    Combine clarity, flow, and citation checks into a unified critique report.
+  expected_output: >
+    A single JSON critique report summarizing all feedback.
+  agent: Critic
+  context:
+    - check_logical_flow
+    - verify_citation_coverage
+    - suggest_expansion_reduction
+
+compute_plagiarism_score:
+  description: >
+    Compare drafts against academic corpora and return similarity percentages.
+  expected_output: >
+    A JSON object with plagiarism scores per section.
+  agent: PlagiarismWatchdog
+  tools:
+    - plagiarism_api
+  context:
+    - emit_critique_report
+
+assess_tone_complexity:
+  description: >
+    Evaluate reading level and academic tone consistency.
+  expected_output: >
+    A JSON object with tone and complexity metrics.
+  agent: PlagiarismWatchdog
+  context:
+    - compute_plagiarism_score
+
+flag_high_overlap:
+  description: >
+    Identify sentences or paragraphs exceeding the similarity threshold.
+  expected_output: >
+    A JSON list of flagged passages.
+  agent: PlagiarismWatchdog
+  context:
+    - compute_plagiarism_score
+
+request_paraphrase:
+  description: >
+    Delegate flagged passages back to the content generator for rephrasing.
+  expected_output: >
+    Updated draft sections with paraphrased content.
+  agent: PlagiarismWatchdog
+  context:
+    - flag_high_overlap
+
+verify_post_rewrite:
+  description: >
+    Recompute similarity on rewritten text to ensure compliance.
+  expected_output: >
+    A JSON object confirming plagiarism scores below threshold.
+  agent: PlagiarismWatchdog
+  context:
+    - request_paraphrase
+
+format_latex_preamble:
+  description: >
+    Inject the LaTeX document class, package imports, and metadata
+    into the cleaned template.
+  expected_output: >
+    A file named preamble.tex with the document preamble.
+  agent: CodeFormatter
+  tools:
+    - latex_tool
+  context:
+    - clean_template
+  output_file: preamble.tex
+
+insert_section_texts:
+  description: >
+    Populate each placeholder in the template with the completed draft sections.
+  expected_output: >
+    A file named full_doc.tex containing all sections.
+  agent: CodeFormatter
+  context:
+    - draft_introduction
+    - draft_related_work
+    - draft_methodology
+    - draft_results_discussion
+    - draft_conclusion
+  output_file: full_doc.tex
+
+format_equations_code:
+  description: >
+    Convert pseudocode into code blocks and render LaTeX math.
+  expected_output: >
+    An updated full_doc.tex with formatted equations and code.
+  agent: CodeFormatter
+  tools:
+    - code_exec
+  context:
+    - insert_section_texts
+  output_file: full_doc.tex
+
+apply_citation_style:
+  description: >
+    Run BibTeX to generate the references section in the chosen citation style.
+  expected_output: >
+    A file named full_doc.bbl with formatted references.
+  agent: CodeFormatter
+  tools:
+    - bibtex_tool
+  context:
+    - generate_bibtex_file
+  output_file: full_doc.bbl
+
+compile_document:
+  description: >
+    Execute the LaTeX build or convert to PDF/DOCX, capturing any errors.
+  expected_output: >
+    A final PDF file paper.pdf ready for download.
+  agent: CodeFormatter
+  tools:
+    - code_exec
+  context:
+    - apply_citation_style
+  output_file: paper.pdf
+
+validate_output_integrity:
+  description: >
+    Check for missing figures, broken citation links, or compile errors,
+    and report any issues.
+  expected_output: >
+    A JSON validation report outlining any build problems.
+  agent: CodeFormatter
+  tools:
+    - latex_validator
+  context:
+    - compile_document

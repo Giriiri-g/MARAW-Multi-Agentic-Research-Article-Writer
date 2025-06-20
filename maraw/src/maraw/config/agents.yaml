@@ -1,0 +1,181 @@
+# src/rwrite/config/agents.yaml
+
+Planner:
+  role: >
+    Research Paper Planner and Coordinator
+  goal: >
+    Break down the user’s input into a detailed paper outline,
+    assign word counts, and orchestrate downstream tasks.
+  backstory: >
+    You are an expert scientific project manager,
+    skilled at structuring complex research documents.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools: []
+  max_iter: 20
+  max_rpm: 10
+  max_execution_time: 300
+  verbose: true
+  allow_delegation: true
+  step_callback: planner_step_logger
+  cache: false
+  allow_code_execution: false
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: true
+  max_reasoning_attempts: 2
+  embedder: null
+  knowledge_sources:
+    - memory_store
+    - journal_guidelines_api
+
+ContentGenerator:
+  role: >
+    Section Content Generator
+  goal: >
+    Draft title, abstract, and all paper sections
+    using the plan, outline, and provided references.
+  backstory: >
+    You are a skilled scientific writer,
+    precise and concise, generating academic text.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools: []
+  max_iter: 10
+  max_rpm: 20
+  max_execution_time: 300
+  verbose: true
+  allow_delegation: false
+  step_callback: content_gen_logger
+  cache: false
+  allow_code_execution: false
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: true
+  max_reasoning_attempts: 1
+  embedder: null
+  knowledge_sources:
+    - memory_store
+    - citation_mapping
+
+CitationManager:
+  role: >
+    Reference Retrieval and BibTeX Manager
+  goal: >
+    Search, rank, and compile relevant citations
+    and emit a valid .bib file.
+  backstory: >
+    You are a meticulous librarian and database specialist
+    with deep experience in academic literature.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools:
+    - search_api
+    - bibtex_tool
+  max_iter: 5
+  max_rpm: 30
+  max_execution_time: 180
+  verbose: true
+  allow_delegation: false
+  step_callback: citation_mgr_logger
+  cache: true
+  allow_code_execution: false
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: false
+  embedder: true
+  knowledge_sources:
+    - arxiv_api
+    - semantic_scholar_api
+
+Critic:
+  role: >
+    Draft Quality Critic
+  goal: >
+    Evaluate sections for clarity, logic, and citation adequacy,
+    and suggest targeted improvements.
+  backstory: >
+    You are an experienced peer reviewer who ensures
+    manuscripts meet high scientific standards.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools: []
+  max_iter: 10
+  max_rpm: 20
+  max_execution_time: 240
+  verbose: true
+  allow_delegation: true
+  step_callback: critic_logger
+  cache: false
+  allow_code_execution: false
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: true
+  max_reasoning_attempts: 2
+  embedder: true
+  knowledge_sources:
+    - memory_store
+    - citation_db
+
+PlagiarismWatchdog:
+  role: >
+    Plagiarism and Style Compliance Monitor
+  goal: >
+    Check for similarity, tone consistency, and request rephrasing
+    for any flagged passages.
+  backstory: >
+    You are an academic integrity officer,
+    vigilant about originality and style.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools:
+    - plagiarism_api
+  max_iter: 5
+  max_rpm: 15
+  max_execution_time: 180
+  verbose: true
+  allow_delegation: true
+  step_callback: plagiarism_logger
+  cache: false
+  allow_code_execution: false
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: false
+  embedder: false
+  knowledge_sources:
+    - plagiarism_corpora_api
+
+CodeFormatter:
+  role: >
+    LaTeX and Document Formatter
+  goal: >
+    Inject preamble, format code/equations, run BibTeX,
+    and compile the final PDF or DOCX.
+  backstory: >
+    You are a software engineer and typesetting expert,
+    adept at turning drafts into publication‑ready documents.
+  llm: chatgroq/mixtral-8x7b-32768
+  tools:
+    - latex_tool
+    - code_exec
+  max_iter: 5
+  max_rpm: 10
+  max_execution_time: 300
+  verbose: true
+  allow_delegation: false
+  step_callback: formatter_logger
+  cache: false
+  allow_code_execution: true
+  code_execution_mode: safe
+  respect_context_window: true
+  multimodal: false
+  inject_date: false
+  reasoning: false
+  embedder: false
+  knowledge_sources:
+    - memory_store
