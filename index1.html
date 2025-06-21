@@ -26,7 +26,7 @@
           <a href="#" id="home" style="color: #f43c33;">Home</a>
         </div>
         <div class="nav-link">
-          <a href="" id="about">About</a>
+          <a href="#about-section" id="about">About</a>
         </div>
         <div class="nav-link">
           <a href="#" id="contactBtn">Contact Us</a>
@@ -78,23 +78,106 @@
         </div>
       </div>
 
+      <div class="about-section" id="about-section">
+        <div class="about-left">
+          <h3 class="about-title">About MARAW systems</h3>
+          <p class="about-text">
+            MARAW - Multi-Agentic Research Article Writer is an AI-powered platform that automates the process of
+            research paper writing through a coordinated team of specialized agents. Each agent is responsible for a
+            specific task such as structuring content, drafting sections, managing citations, formatting, or reviewing
+            the final output.
+          </p>
+          <p class="about-text">
+            Built on the CrewAI framework and accelerated by the Groq Cloud Console, MARAW integrates open-source
+            language models like LLaMA and Mistral to ensure accurate and high-quality generation. Developed by AI
+            researchers and engineers, MARAW allows academics to focus on their ideas while the platform handles the
+            technical work of writing.
+          </p>
+        </div>
 
-      <div class="about-section">
-    <div class="about-left">
-      <h3 class="about-title">About MARAW systems</h3>
-      <p class="about-text">
-        MARAW - Multi-Agentic Research Article Writer is an AI-powered platform that automates the process of research paper writing through a coordinated team of specialized agents. Each agent is responsible for a specific task such as structuring content, drafting sections, managing citations, formatting, or reviewing the final output.
-      </p>
-      <p class="about-text">
-        Built on the CrewAI framework and accelerated by the Groq Cloud Console, MARAW integrates open-source language models like LLaMA and Mistral to ensure accurate and high-quality generation. Developed by AI researchers and engineers, MARAW allows academics to focus on their ideas while the platform handles the technical work of writing.
-      </p>
-    </div>
-
-    <div class="about-right">
-      <img src="your-image.png" alt="MARAW Illustration" class="about-image">
-    </div>
-  </div>
+        <div class="about-right">
+          <img src="images\arch.jpeg" alt="MARAW Illustration" class="about-image">
+        </div>
+      </div>
     </main>
+    <div class="tools-section">
+        <div class="carousel-container" id="carouselContainer">
+          <div class="carousel-track" id="carouselTrack">
+            <!-- Crew AI Card -->
+            <div class="tool-card">
+              <div class="card-content">
+                <h3>Crew AI</h3>
+                <p>Multi-agent orchestration framework that coordinates specialized AI agents to work together
+                  seamlessly, enabling complex task automation and intelligent workflow management for research paper
+                  generation.</p>
+              </div>
+              <div class="card-image">🤖</div>
+            </div>
+
+            <!-- Groq Cloud Hosting Card -->
+            <div class="tool-card">
+              <div class="card-content">
+                <h3>Groq Cloud Hosting</h3>
+                <p>High-performance cloud infrastructure optimized for AI workloads, providing lightning-fast inference
+                  speeds and scalable computing resources for demanding language model applications.</p>
+              </div>
+              <div class="card-image">☁️</div>
+            </div>
+
+            <!-- Llama 3.1 Model Card -->
+            <div class="tool-card">
+              <div class="card-content">
+                <h3>Llama 3.1 Model</h3>
+                <p>State-of-the-art large language model delivering exceptional performance in text generation,
+                  reasoning, and complex problem-solving across diverse academic and research domains.</p>
+              </div>
+              <div class="card-image">🦙</div>
+            </div>
+
+            <!-- Latex Generation Card -->
+            <div class="tool-card">
+              <div class="card-content">
+                <h3>LaTeX Generation</h3>
+                <p>Automated academic document formatting system that generates publication-ready papers with proper
+                  citations, mathematical expressions, and professional layouts meeting journal standards.</p>
+              </div>
+              <div class="card-image">📝</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="author-carousel-container">
+        <div class="author-carousel-wrapper">
+            <div class="author-card author-active" data-index="0">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face" alt="John Smith" class="author-image">
+                <h2 class="author-name">John Smith</h2>
+                <p class="author-description">
+                    A passionate storyteller with over 15 years of experience in crafting compelling narratives. John has authored 8 bestselling novels and has been featured in numerous literary magazines. His work explores themes of human connection, adventure, and the complexities of modern life.
+                </p>
+            </div>
+            
+            <div class="author-card" data-index="1">
+                <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face" alt="Sarah Johnson" class="author-image">
+                <h2 class="author-name">Sarah Johnson</h2>
+                <p class="author-description">
+                    An award-winning author specializing in mystery and thriller genres. Sarah's unique ability to weave intricate plots with rich character development has earned her critical acclaim and a devoted readership. She has published 12 novels and won the prestigious Mystery Writers Award three times.
+                </p>
+            </div>
+        </div>
+        
+        <button class="author-nav-button author-prev" onclick="authorChangeCard(-1)">‹</button>
+        <button class="author-nav-button author-next" onclick="authorChangeCard(1)">›</button>
+        
+        <div class="author-indicators">
+            <div class="author-indicator author-active" onclick="authorGoToCard(0)"></div>
+            <div class="author-indicator" onclick="authorGoToCard(1)"></div>
+        </div>
+    </div>
+
+    <footer>
+
+    </footer>
   </div>
 
   <div id="login-overlay">
