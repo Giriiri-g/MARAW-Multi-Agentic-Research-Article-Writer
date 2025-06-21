@@ -19,6 +19,24 @@ body {
   padding: 15px 20px;
   position: relative;
 }
+.nav-link:hover {
+  color: #fff;
+}
+
+.navbar-collapse {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-link-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* optional: spacing between links */
+  flex-grow: 1;
+}
+
 
 .nav-link:after {
   color: #fff;

@@ -4,18 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RWrite</title>
+  <title>MARAW</title>
   <link rel="stylesheet" href="style1.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="script1.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-  <div class="shape-blob" style="position: fixed;"></div>
-  <div class="shape-blob two" style="position: fixed;"></div>
+  <div class="shape-blob"></div>
+  <div class="shape-blob two"></div>
   <div class="overlay">
     <header>
       <nav>
@@ -26,64 +29,127 @@
           <a href="" id="about">About</a>
         </div>
         <div class="nav-link">
-          <a href="" id="contact">Contact Us</a>
+          <a href="#" id="contactBtn">Contact Us</a>
         </div>
         <div class="nav-link">
-          <a href="" id="pricing">Pricing</a>
+          <a href="pricing.html" id="pricing">Pricing</a>
         </div>
         <div class="nav-link">
-          <a href="" id="demo">Try Demo</a>
+          <a href="demo.html" id="demo">Try Demo</a>
         </div>
       </nav>
 
       <div class="authArea">
-        <span class="user"></span>
-        <button id="login">Login</button>
-        <button id="logout">Logout</button>
+        <span id="user-welc"></span>
+        <button id="authToggleBtn">Login</button>
       </div>
     </header>
     <main>
       <div class="intro-wrap">
-        <h1 id="title">RWrite</h1>
+        <h1 id="title">MARAW</h1>
         <div class="line"></div>
         <div class="typeJsText"
-          data-typetext="RWrite is a multi-agentic platform that automates every step of Research Writing. Delivering publication-ready manuscripts.">
-        </div>
-      </div>
-      
-      
-      <div class="animated-box slide-left hidden" id="slide1">End-To-End Article Generation</div>
-      <div class="animated-box slide-right hidden" id="slide2">Latex Formatting</div>
-      <div class="animated-box slide-left hidden" id="slide3">Title and Abstract Writer</div>
-      <div class="animated-box slide-right hidden" id="slide4">Bibliography Manager</div>
-      
-      
-      <div class="team-wrapper">
-        <div class="author1">
-          <img src="author1.png" alt="Girish Sundararajan">
-          <span class="title">Girish Sundararajan</span>
-          <div class="desc">Author 1 Description</div>
-        </div>
-        <div class="author2">
-          <img src="author2.png" alt="Nair">
-          <span class="title">Harishankar Binu Nair</span>
-          <div class="desc">Author 2 Description</div>
+          data-typetext="MARAW is a multi-agentic platform that automates every step of Research Writing. Delivering publication-ready manuscripts.">
         </div>
       </div>
 
-    
-      <div class="demo-wrapper">
-        <div class="demo-left">
-          <video src="demo.mp4"></video>
+      <div class="container">
+        <div class="text-module" id="module1">
+          <div class="module-number">1</div>
+          <div class="module-subtitle">The polish of presentation</div>
+          <h2 class="module-title">Automated Formatting, <span class="highlight">effortless writing</span></h2>
+          <p class="module-description">Free yourself from manual Labour - every section, table, and figure is perfectly
+            styled.</p>
         </div>
-        <div class="demo-right">
-          <div class="demo-desc">RWrite is a multi-agent platform that automates every step of research writing — from topic selection to a publication-ready manuscript. Generate, edit, and export professional research papers with ease.
 
-</div>
-          <button class="demo-try">Try for Free</button>
+        <div class="text-module" id="module2">
+          <div class="module-number">2</div>
+          <div class="module-subtitle">The strength of synergy</div>
+          <h2 class="module-title"><span class="highlight">Multi-agentic</span> collaboration, seamless pipeline</h2>
+          <p class="module-description">Specialized agents unite formatting, citations, and code generation.</p>
+        </div>
+
+        <div class="text-module" id="module3">
+          <div class="module-number">3</div>
+          <div class="module-subtitle">The challenge of citations</div>
+          <h2 class="module-title">Instant <span class="highlight">citations,</span> perfect style</h2>
+          <p class="module-description">Agents fetch, format, and validate references against any journal in one click.
+          </p>
         </div>
       </div>
+
+
+      <div class="about-section">
+    <div class="about-left">
+      <h3 class="about-title">About MARAW systems</h3>
+      <p class="about-text">
+        MARAW - Multi-Agentic Research Article Writer is an AI-powered platform that automates the process of research paper writing through a coordinated team of specialized agents. Each agent is responsible for a specific task such as structuring content, drafting sections, managing citations, formatting, or reviewing the final output.
+      </p>
+      <p class="about-text">
+        Built on the CrewAI framework and accelerated by the Groq Cloud Console, MARAW integrates open-source language models like LLaMA and Mistral to ensure accurate and high-quality generation. Developed by AI researchers and engineers, MARAW allows academics to focus on their ideas while the platform handles the technical work of writing.
+      </p>
+    </div>
+
+    <div class="about-right">
+      <img src="your-image.png" alt="MARAW Illustration" class="about-image">
+    </div>
+  </div>
     </main>
+  </div>
+
+  <div id="login-overlay">
+    <div id="login-body">
+      <div class="login-header">
+        <span class="login-title">Login</span>
+        <button id="login-close">X</button>
+      </div>
+      <form id="loginForm" novalidate>
+        <div>
+          <div class="form-header" id="username-header">
+            <label for="username">Username</label>
+          </div>
+          <input id="username" type="text" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="password-header">
+            <label for="password">Password</label>
+          </div>
+          <input id="password" type="password" required class="form-field" />
+        </div>
+        <div class="form-footer">
+          <a href="#">Create New Account?</a>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <div class="submit-btn-wrapper">
+          <button type="submit" class="login-submit">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="contactoverlay">
+    <div id="contactpop">
+      <div class="con-header">
+        <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+        <button type="button" onclick="contactclose()">X</button>
+      </div>
+
+      <form>
+        <div class="mb-4">
+          <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+          <input type="text" class="form-control" id="name1" placeholder="Your name">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+          <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
+          <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+        </div>
+        <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+      </form>
+    </div>
   </div>
 </body>
 
