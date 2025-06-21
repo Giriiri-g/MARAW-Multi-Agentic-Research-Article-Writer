@@ -41,28 +41,9 @@ function typeLoop() {
 // kick it off
 typeLoop();
 
-function isInViewport(el) {
-  const top = $(el).offset().top;
-  const bottom = top + $(el).outerHeight();
-  const scrollTop = $(window).scrollTop();
-  const viewportHeight = $(window).height();
-
-  return bottom > scrollTop && top < scrollTop + viewportHeight;
-}
-
-function animateOnScroll() {
-  $('.animated-box').each(function () {
-    if (isInViewport(this)) {
-      $(this).addClass('visible');
-    }
-  });
-}
-
-$(document).ready(function () {
-  animateOnScroll(); // Trigger on load
-  $(window).on('scroll resize', animateOnScroll);
-});
-
+// 
+// Login Popup + Contact Popup Script
+// 
 
 
 $(document).ready(function () {
@@ -280,6 +261,12 @@ $(document).ready(function () {
 });
 
 
+// 
+// Slide 2 Scripts
+// 
+
+
+
 const modules = [
   { element: document.getElementById('module1'), speed: 0.3, initialOffset: 500 },
   { element: document.getElementById('module2'), speed: 0.6, initialOffset: 700 },
@@ -348,7 +335,10 @@ window.addEventListener('resize', updateAnimation);
 updateAnimation();
 
 
+// 
 // Tool Carousal Script
+// 
+
 
 class Carousel {
   constructor() {

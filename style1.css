@@ -94,6 +94,13 @@ nav {
     gap: 0.5rem;
 }
 
+
+/*  */
+/* Blob Animation Styles */
+/*  */
+
+
+
 .shape-blob {
     background: #f43c33;
     height: 200px;
@@ -217,35 +224,8 @@ main {
 }
 
 
+/* Login Popup + Contact Popup Styles */
 
-
-.animated-box {
-    height: 200px;
-    width: 500px;
-    background-color: aqua;
-    border-radius: 4px;
-    opacity: 0;
-    transition: all 0.8s ease-out;
-    transform: translateX(0);
-    /* base state */
-}
-
-/* Initial state before animation */
-.slide-left {
-    transform: translateX(-100px);
-}
-
-.slide-right {
-    align-self: flex-end;
-    transform: translateX(100px);
-}
-
-/* When element becomes visible */
-.animated-box.visible {
-    opacity: 1;
-    transform: translateX(0);
-    /* reset to original position */
-}
 
 #authToggleBtn {
     width: 6em;

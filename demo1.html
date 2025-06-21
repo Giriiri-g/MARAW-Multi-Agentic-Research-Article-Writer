@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARAW</title>
+    <link rel="stylesheet" href="demo1.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="demo1.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-link">
+                <a href="index1.html" id="home">Home</a>
+            </div>
+            <div class="nav-link">
+                <a href="index1.html#about-section" id="about">About</a>
+            </div>
+            <div class="nav-link">
+                <a href="#" id="contactBtn">Contact Us</a>
+            </div>
+            <div class="nav-link">
+                <a href="pricing1.html" id="pricing">Pricing</a>
+            </div>
+            <div class="nav-link">
+                <a href="demo1.html" id="demo" style="color: #f43c33;">Try Demo</a>
+            </div>
+        </nav>
+
+        <div class="authArea">
+            <span id="user-welc"></span>
+            <button id="authToggleBtn">Login</button>
+        </div>
+    </header>
+
+    <div class="chat-display scrollbar-custom" id="chatDisplay">
+        <!-- Messages will be displayed here -->
+    </div>
+
+    <div class="input-section">
+        <input type="text" class="input-box" id="inputBox" placeholder="Enter your research topic or command...">
+        <button class="send-button" id="sendButton">Send</button>
+    </div>
+      <div id="login-overlay">
+    <div id="login-body">
+      <div class="login-header">
+        <span class="login-title">Login</span>
+        <button id="login-close">X</button>
+      </div>
+      <form id="loginForm" novalidate>
+        <div>
+          <div class="form-header" id="username-header">
+            <label for="username">Username</label>
+          </div>
+          <input id="username" type="text" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="password-header">
+            <label for="password">Password</label>
+          </div>
+          <input id="password" type="password" required class="form-field" />
+        </div>
+        <div class="form-footer">
+          <a href="#">Create New Account?</a>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <div class="submit-btn-wrapper">
+          <button type="submit" class="login-submit">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="contactoverlay">
+    <div id="contactpop">
+      <div class="con-header">
+        <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+        <button type="button" onclick="contactclose()">X</button>
+      </div>
+
+      <form>
+        <div class="mb-4">
+          <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+          <input type="text" class="form-control" id="name1" placeholder="Your name">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+          <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+        </div>
+        <div class="mb-4">
+          <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
+          <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+        </div>
+        <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
