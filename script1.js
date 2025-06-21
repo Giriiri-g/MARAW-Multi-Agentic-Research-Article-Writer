@@ -351,190 +351,190 @@ updateAnimation();
 // Tool Carousal Script
 
 class Carousel {
-    constructor() {
-        this.container = document.getElementById('carouselContainer');
-        this.track = document.getElementById('carouselTrack');
-        this.cards = document.querySelectorAll('.tool-card');
-        this.toolsSection = document.querySelector('.tools-section');
-        this.currentOffset = 0;
-        this.containerWidth = 0;
-        this.trackWidth = 0;
-        this.maxOffset = 0;
-        this.autoScrollDirection = 1; // 1 for right, -1 for left
-        this.isAtEnd = false;
-        this.isAtBeginning = true;
-        this.isInViewport = false;
-        
-        this.init();
-        this.calculateDimensions();
-        this.checkViewportPosition();
-        this.startAutoScroll();
-    }
+  constructor() {
+    this.container = document.getElementById('carouselContainer');
+    this.track = document.getElementById('carouselTrack');
+    this.cards = document.querySelectorAll('.tool-card');
+    this.toolsSection = document.querySelector('.tools-section');
+    this.currentOffset = 0;
+    this.containerWidth = 0;
+    this.trackWidth = 0;
+    this.maxOffset = 0;
+    this.autoScrollDirection = 1; // 1 for right, -1 for left
+    this.isAtEnd = false;
+    this.isAtBeginning = true;
+    this.isInViewport = false;
 
-    init() {
-        // Wheel event for manual scrolling
-        this.container.addEventListener('wheel', (e) => {
-            const shouldPreventDefault = this.handleWheelScroll(e.deltaY);
-            if (shouldPreventDefault) {
-                e.preventDefault();
-            }
-        });
+    this.init();
+    this.calculateDimensions();
+    this.checkViewportPosition();
+    this.startAutoScroll();
+  }
 
-        // Touch events for mobile
-        let startX = 0;
-        let startOffset = 0;
+  init() {
+    // Wheel event for manual scrolling
+    this.container.addEventListener('wheel', (e) => {
+      const shouldPreventDefault = this.handleWheelScroll(e.deltaY);
+      if (shouldPreventDefault) {
+        e.preventDefault();
+      }
+    });
 
-        this.container.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startOffset = this.currentOffset;
-            this.stopAutoScroll();
-        });
+    // Touch events for mobile
+    let startX = 0;
+    let startOffset = 0;
 
-        this.container.addEventListener('touchmove', (e) => {
-            const currentX = e.touches[0].clientX;
-            const diff = startX - currentX;
-            const newOffset = startOffset + diff;
-            
-            // Only prevent default if we're within carousel bounds and in viewport
-            if (this.isInViewport && newOffset >= 0 && newOffset <= this.maxOffset) {
-                e.preventDefault();
-                this.setOffset(newOffset);
-            }
-        });
+    this.container.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startOffset = this.currentOffset;
+      this.stopAutoScroll();
+    });
 
-        this.container.addEventListener('touchend', () => {
-            this.startAutoScroll();
-        });
+    this.container.addEventListener('touchmove', (e) => {
+      const currentX = e.touches[0].clientX;
+      const diff = startX - currentX;
+      const newOffset = startOffset + diff;
 
-        // Pause auto-scroll on hover
-        this.container.addEventListener('mouseenter', () => this.stopAutoScroll());
-        this.container.addEventListener('mouseleave', () => this.startAutoScroll());
-
-        // Recalculate on window resize
-        window.addEventListener('resize', () => {
-            this.calculateDimensions();
-        });
-
-        // Track scroll position to determine when to activate carousel
-        window.addEventListener('scroll', () => {
-            this.checkViewportPosition();
-        });
-    }
-
-    calculateDimensions() {
-        this.containerWidth = this.container.offsetWidth;
-        this.trackWidth = this.cards.length * this.containerWidth;
-        this.maxOffset = this.trackWidth - this.containerWidth;
-        this.updateBoundaryStates();
-        this.checkViewportPosition();
-    }
-
-    checkViewportPosition() {
-        const rect = this.toolsSection.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const sectionCenter = rect.top + (rect.height / 2);
-        const viewportCenter = viewportHeight / 2;
-        
-        // Check if the center of the tools section is at or past the center of the viewport
-        this.isInViewport = sectionCenter <= viewportCenter;
-        
-        // Start or stop auto-scroll based on viewport position
-        if (this.isInViewport && !this.autoScrollInterval) {
-            this.startAutoScroll();
-        } else if (!this.isInViewport && this.autoScrollInterval) {
-            this.stopAutoScroll();
-        }
-    }
-
-    handleWheelScroll(delta) {
-        // Only handle carousel scrolling if the tools section is in the middle of viewport
-        if (!this.isInViewport) {
-            return false; // Allow normal page scrolling
-        }
-        
-        const scrollAmount = delta * 2; // Adjust sensitivity
-        const newOffset = this.currentOffset + scrollAmount;
-        
-        // Check if we're trying to scroll beyond boundaries
-        if (delta > 0) { // Scrolling right/down
-            if (this.currentOffset >= this.maxOffset) {
-                // At the end, allow page scrolling
-                return false; // Don't prevent default
-            }
-        } else { // Scrolling left/up
-            if (this.currentOffset <= 0) {
-                // At the beginning, allow page scrolling
-                return false; // Don't prevent default
-            }
-        }
-        
-        // Within carousel bounds, handle internally
-        this.stopAutoScroll();
+      // Only prevent default if we're within carousel bounds and in viewport
+      if (this.isInViewport && newOffset >= 0 && newOffset <= this.maxOffset) {
+        e.preventDefault();
         this.setOffset(newOffset);
-        
-        // Restart auto-scroll after a delay
-        clearTimeout(this.autoScrollTimeout);
-        this.autoScrollTimeout = setTimeout(() => {
-            this.startAutoScroll();
-        }, 2000);
-        
-        return true; // Prevent default
+      }
+    });
+
+    this.container.addEventListener('touchend', () => {
+      this.startAutoScroll();
+    });
+
+    // Pause auto-scroll on hover
+    this.container.addEventListener('mouseenter', () => this.stopAutoScroll());
+    this.container.addEventListener('mouseleave', () => this.startAutoScroll());
+
+    // Recalculate on window resize
+    window.addEventListener('resize', () => {
+      this.calculateDimensions();
+    });
+
+    // Track scroll position to determine when to activate carousel
+    window.addEventListener('scroll', () => {
+      this.checkViewportPosition();
+    });
+  }
+
+  calculateDimensions() {
+    this.containerWidth = this.container.offsetWidth;
+    this.trackWidth = this.cards.length * this.containerWidth;
+    this.maxOffset = this.trackWidth - this.containerWidth;
+    this.updateBoundaryStates();
+    this.checkViewportPosition();
+  }
+
+  checkViewportPosition() {
+    const rect = this.toolsSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const sectionCenter = rect.top + (rect.height / 2);
+    const viewportCenter = viewportHeight / 2;
+
+    // Check if the center of the tools section is at or past the center of the viewport
+    this.isInViewport = sectionCenter <= viewportCenter;
+
+    // Start or stop auto-scroll based on viewport position
+    if (this.isInViewport && !this.autoScrollInterval) {
+      this.startAutoScroll();
+    } else if (!this.isInViewport && this.autoScrollInterval) {
+      this.stopAutoScroll();
+    }
+  }
+
+  handleWheelScroll(delta) {
+    // Only handle carousel scrolling if the tools section is in the middle of viewport
+    if (!this.isInViewport) {
+      return false; // Allow normal page scrolling
     }
 
-    setOffset(newOffset) {
-        // Clamp to boundaries instead of wrapping
-        this.currentOffset = Math.max(0, Math.min(this.maxOffset, newOffset));
-        this.updatePosition();
-        this.updateBoundaryStates();
+    const scrollAmount = delta * 2; // Adjust sensitivity
+    const newOffset = this.currentOffset + scrollAmount;
+
+    // Check if we're trying to scroll beyond boundaries
+    if (delta > 0) { // Scrolling right/down
+      if (this.currentOffset >= this.maxOffset) {
+        // At the end, allow page scrolling
+        return false; // Don't prevent default
+      }
+    } else { // Scrolling left/up
+      if (this.currentOffset <= 0) {
+        // At the beginning, allow page scrolling
+        return false; // Don't prevent default
+      }
     }
 
-    updateBoundaryStates() {
-        this.isAtBeginning = this.currentOffset <= 0;
-        this.isAtEnd = this.currentOffset >= this.maxOffset;
-    }
+    // Within carousel bounds, handle internally
+    this.stopAutoScroll();
+    this.setOffset(newOffset);
 
-    updatePosition() {
-        this.track.style.transform = `translateX(-${this.currentOffset}px)`;
-    }
+    // Restart auto-scroll after a delay
+    clearTimeout(this.autoScrollTimeout);
+    this.autoScrollTimeout = setTimeout(() => {
+      this.startAutoScroll();
+    }, 2000);
 
-    startAutoScroll() {
-        if (this.autoScrollInterval) return;
-        
-        this.autoScrollInterval = setInterval(() => {
-            const scrollSpeed = 1; // pixels per frame
-            
-            if (this.autoScrollDirection === 1) {
-                // Scrolling right
-                if (this.currentOffset >= this.maxOffset) {
-                    // Stop at the end instead of looping
-                    this.stopAutoScroll();
-                    return;
-                }
-                this.currentOffset += scrollSpeed;
-            } else {
-                // Scrolling left
-                if (this.currentOffset <= 0) {
-                    // Stop at the beginning instead of looping
-                    this.stopAutoScroll();
-                    return;
-                }
-                this.currentOffset -= scrollSpeed;
-            }
-            
-            this.updatePosition();
-            this.updateBoundaryStates();
-        }, 16); // ~60fps
-    }
+    return true; // Prevent default
+  }
 
-    stopAutoScroll() {
-        clearInterval(this.autoScrollInterval);
-        this.autoScrollInterval = null;
-    }
+  setOffset(newOffset) {
+    // Clamp to boundaries instead of wrapping
+    this.currentOffset = Math.max(0, Math.min(this.maxOffset, newOffset));
+    this.updatePosition();
+    this.updateBoundaryStates();
+  }
+
+  updateBoundaryStates() {
+    this.isAtBeginning = this.currentOffset <= 0;
+    this.isAtEnd = this.currentOffset >= this.maxOffset;
+  }
+
+  updatePosition() {
+    this.track.style.transform = `translateX(-${this.currentOffset}px)`;
+  }
+
+  startAutoScroll() {
+    if (this.autoScrollInterval) return;
+
+    this.autoScrollInterval = setInterval(() => {
+      const scrollSpeed = 1; // pixels per frame
+
+      if (this.autoScrollDirection === 1) {
+        // Scrolling right
+        if (this.currentOffset >= this.maxOffset) {
+          // Stop at the end instead of looping
+          this.stopAutoScroll();
+          return;
+        }
+        this.currentOffset += scrollSpeed;
+      } else {
+        // Scrolling left
+        if (this.currentOffset <= 0) {
+          // Stop at the beginning instead of looping
+          this.stopAutoScroll();
+          return;
+        }
+        this.currentOffset -= scrollSpeed;
+      }
+
+      this.updatePosition();
+      this.updateBoundaryStates();
+    }, 16); // ~60fps
+  }
+
+  stopAutoScroll() {
+    clearInterval(this.autoScrollInterval);
+    this.autoScrollInterval = null;
+  }
 }
 
 // Initialize carousel when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new Carousel();
+  new Carousel();
 });
 
 
@@ -593,4 +593,56 @@ document.addEventListener('keydown', (e) => {
       authorChangeCard(1);
     }
   }
+});
+
+
+
+// Demo Section
+
+
+function playDemo() {
+  const button = document.querySelector('.demo-play-button');
+  const placeholder = document.querySelector('.demo-video-placeholder');
+
+  // Add click effect
+  button.style.transform = 'scale(0.95)';
+  setTimeout(() => {
+    button.style.transform = 'scale(1.1)';
+  }, 150);
+
+  // Simulate video loading
+  setTimeout(() => {
+    placeholder.innerHTML = '<div style="width: 100%; height: 100%; background: linear-gradient(45deg, #F43C33, #d63027); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold;">Demo Video Playing...</div>';
+  }, 300);
+
+  console.log('Demo video would start playing here');
+}
+
+function tryNow() {
+  const button = document.querySelector('.demo-cta-button');
+  button.style.transform = 'translateY(-3px) scale(0.98)';
+  setTimeout(() => {
+    button.style.transform = 'translateY(-3px) scale(1)';
+  }, 150);
+
+  console.log('Redirecting to demo/trial page');
+}
+
+// Add scroll-triggered animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+    }
+  });
+}, observerOptions);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const animatedElements = document.querySelectorAll('.demo-video-container, .demo-content-container');
+  animatedElements.forEach(el => observer.observe(el));
 });
