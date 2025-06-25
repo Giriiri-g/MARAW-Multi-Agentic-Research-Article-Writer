@@ -48,6 +48,16 @@ typeLoop();
 
 $(document).ready(function () {
   let isLoggedIn = false;
+  let isSignupMode = false;
+
+  $('.form-footer a:first').click(function (e) {
+  e.preventDefault();
+  isSignupMode = true;
+  $('.login-title').text('Signup');
+  $('.login-submit').text('Signup');
+});
+
+
 
   const loginFields = [
     {
@@ -89,12 +99,18 @@ $(document).ready(function () {
   }
 
   function resetForm() {
-    validationStarted = false;
-    loginFields.forEach(f => {
-      $(f.header).css('color', '').find('.error-field').remove();
-      $(f.id).val('');
-    });
-  }
+  validationStarted = false;
+  isSignupMode = false;
+  loginFields.forEach(f => {
+    $(f.header).css('color', '').find('.error-field').remove();
+    $(f.id).val('');
+  });
+
+  // Revert button and title text
+  $('.login-title').text('Login');
+  $('.login-submit').text('Login');
+}
+
 
   function showLoginPopup() {
     $('#login-overlay').fadeIn();
