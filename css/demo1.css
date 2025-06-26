@@ -19,7 +19,6 @@ body {
     padding: 20px;
     overflow-y: auto;
     background-color: #000;
-    border-bottom: 2px solid #444;
     margin-top: 5rem;
     margin-left: 10rem;
     margin-right: 10rem;
@@ -110,6 +109,7 @@ body {
     color: #fff;
     font-size: 14px;
     outline: none;
+    max-width: 85rem;
     transition: border-color 0.3s;
 }
 
@@ -117,8 +117,41 @@ body {
     border-color: #F43C33;
 }
 
+.send-retry-box{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 8%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+#retry{
+    height: 45%;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.color-1{
+    color: #fff;
+    background-color: #F43C33;
+}
+
+.color-2{
+    color: #000;
+    background-color: #56f433;
+}
+
 .send-button {
     padding: 12px 24px;
+    height: 45%;
+    width: 100%;
     background-color: #F43C33;
     color: #fff;
     border: none;

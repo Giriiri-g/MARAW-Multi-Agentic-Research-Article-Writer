@@ -18,9 +18,23 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
-    }
+    "conf": "IEEE Transactions on Neural Networks and Learning Systems",
+    "author": "Girish S, Undergraduate Researcher, Department of Computer Science, Amrita Vishwa Vidyapeetham",
+    "problem_statement": "Despite progress in autism diagnosis, current methods relying on single-modal data fail to capture the complexity of ASD.",
+    "proposal": "We propose a modular multi-agent system that fuses behavioral video data, eye-tracking, and questionnaire analysis to enhance ASD diagnostic accuracy.",
+    "contributions": [
+        "Designed a multi-modal diagnostic architecture",
+        "Integrated pose analysis and literature mining agents",
+        "Improved classification accuracy over baseline models"
+    ],
+    "results": "Our system achieved an 89.2% accuracy in ASD classification, surpassing single-modal benchmarks by 11%.",
+    "title": "Advancing Autism Diagnosis with Modular Multi-Agent Systems",
+    "abstract": "",
+    "keywords": ["ASD Diagnosis", "Multi-Modal Learning", "Agentic Systems"],
+    "images": [],
+    "references": []
+}
+
     
     try:
         Maraw().crew().kickoff(inputs=inputs)
@@ -66,3 +80,6 @@ def test():
 
     except Exception as e:
         raise Exception(f"An error occurred while testing the crew: {e}")
+
+
+run()
