@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 let authorCurrentCard = 0;
-const authorTotalCards = 2;
+const authorTotalCards = 3;
 
 function authorUpdateCarousel() {
   const cards = document.querySelectorAll('.author-card');
