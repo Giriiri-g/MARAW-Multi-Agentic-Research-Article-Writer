@@ -7,6 +7,9 @@ import websockets
 import json
 import time
 import os
+import subprocess
+import tempfile
+from pathlib import Path
 
 # Global variables
 clients = {}
@@ -27,6 +30,68 @@ async def wait_for_input(websocket, agent, reasoning, message):
     await send_message(websocket, agent, reasoning, message)
     user_response = await websocket.recv()
     return json.loads(user_response).get('message', '').strip()
+
+def compile_latex_to_pdf(latex_content, output_dir):
+    """Compile LaTeX content to PDF using pdflatex"""
+    try:
+        # Create temporary tex file
+        tex_file = os.path.join(output_dir, "paper.tex")
+        pdf_file = os.path.join(output_dir, "paper.pdf")
+        
+        # Write LaTeX content to file
+        with open(tex_file, 'w', encoding='utf-8') as f:
+            f.write(latex_content)
+        
+        # Compile with pdflatex (run twice for references)
+        for _ in range(2):
+            result = subprocess.run([
+                'pdflatex', 
+                '-output-directory', output_dir,
+                '-interaction=nonstopmode',
+                tex_file
+            ], capture_output=True, text=True, cwd=output_dir)
+            
+            if result.returncode != 0:
+                print(f"LaTeX compilation error: {result.stderr}")
+                return None
+        
+        if os.path.exists(pdf_file):
+            return pdf_file
+        else:
+            return None
+            
+    except FileNotFoundError:
+        print("pdflatex not found. Install LaTeX distribution (MiKTeX/TeX Live)")
+        return None
+    except Exception as e:
+        print(f"Error compiling LaTeX: {e}")
+        return None
+
+async def send_file(websocket, file_path, file_type="tex"):
+    """Send file to client as base64"""
+    try:
+        with open(file_path, 'rb') as f:
+            file_data = base64.b64encode(f.read()).decode()
+        
+        filename = os.path.basename(file_path)
+        
+        response = {
+            "type": "file_download",
+            "agent": "System",
+            "reasoning": f"Sending {file_type.upper()} file for download",
+            "message": f"📄 {filename} ready for download",
+            "file_data": file_data,
+            "filename": filename,
+            "file_type": file_type,
+            "timestamp": time.time(),
+        }
+        
+        await websocket.send(json.dumps(response))
+        return True
+        
+    except Exception as e:
+        await send_message(websocket, "System", "File send error", f"❌ Error sending file: {str(e)}")
+        return False
 
 def clean_inputs(llm_llama3_3_70B, inputs):
   system_prompt = SystemMessage(
@@ -543,6 +608,7 @@ async def handle_client(websocket):
                 "results: {results_sec}"
                 "discussion: {discussion}"
                 "conclusion: {conclusion}"
+                "Author Guidelines for the format: {author_guidelines}"
                 "Use the provided paper dictionary to write a complete LaTeX document. "
                 "Format the title, authors, abstract, and each section as a \\section or \\subsection if needed. "
                 "Add a References section at the end using \\bibitem format. "
@@ -559,10 +625,89 @@ async def handle_client(websocket):
             tasks=[write_latex_task],
             process=Process.sequential
         )
+        from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 
+        search_tool = SerperDevTool()
+        scrape_tool = ScrapeWebsiteTool()
+
+        search_agent = Agent(
+        role="ResearchAgent",
+        goal="Find the official author guidelines page for the specified conference or journal",
+        backstory="An expert in academic publishing and conference websites. Skilled in using search tools to find submission policies and author instructions.",
+        tools=[search_tool],
+        llm="groq/llama-3.3-70b-versatile",
+        api_key=os.environ["GROQ_API_KEY"],
+        verbose=False
+        )
+
+        scraper_agent = Agent(
+        role="ScraperAgent",
+        goal="Extract author guidelines and formatting requirements from the identified website",
+        backstory="A web-scraping specialist that can process HTML pages and extract relevant content for scientific publication guidelines.",
+        tools=[scrape_tool],
+        llm="groq/llama-3.3-70b-versatile",
+        api_key=os.environ["GROQ_API_KEY"],
+        verbose=False
+        )
+
+        summarizer_agent = Agent(
+        role="SummarizerAgent",
+        goal="Compile and summarize author guidelines into a structured format suitable for automated LaTeX generation",
+        backstory="An academic writing assistant that understands publication standards and formats output for AI-powered writing agents.",
+        llm="groq/llama-3.3-70b-versatile",
+        api_key=os.environ["GROQ_API_KEY"],
+        verbose=False
+        )
+
+        # ----------------------------------------------------
+
+        search_task = Task(
+        description=(
+        "Search for the official author/submission guidelines page for the specified journal or conference: {conf}. "
+        "Return the most relevant link(s) that contain formatting instructions or LaTeX templates."
+        ),
+        expected_output="A list of 1–3 URLs pointing to the official author/submission guidelines page.",
+        agent=search_agent
+        )
+
+        scrape_task = Task(
+        description=(
+        "Using the links provided, scrape the page content. "
+        "Extract details like template format (LaTeX/Word), style files, page limits, font requirements, and reference style."
+        ),
+        expected_output="Extracted text containing the official author instructions, submission format, page limits, and any downloadable templates.",
+        agent=scraper_agent,
+        context=[search_task]
+        )
+
+        summarize_task = Task(
+        description=(
+        "Using the extracted content, summarize the author guidelines into a structured format with the following fields: "
+        "Format (LaTeX/Word), Page Limit, Font, Margin, Template Download Link, Reference Style, Submission Link."
+        ),
+        expected_output="A Summary of author guidelines ready for use by an automated paper writing system.",
+        agent=summarizer_agent,
+        context=[scrape_task]
+        )
+
+        # ----------------------------------------------------
+
+        crew1 = Crew(
+        agents=[search_agent, scraper_agent, summarizer_agent],
+        tasks=[search_task, scrape_task, summarize_task],
+        process=Process.sequential
+        )
+
+        
+
+        
         recurssion_depth=2
         inp2 = clean_inputs(llm_llama3_3_70B, inputs)
         # Abstract
+        result = crew1.kickoff(inputs=inp2)
+        inp2["author_guidelines"] = result.tasks_output[2].raw 
+
+
         abstract = gen_abstract(llm_llama3_3_70B, inp2)
         critic = await wait_for_input(websocket, "Content Generator", "", "Abstract: "+abstract)
         i=0
@@ -652,10 +797,30 @@ async def handle_client(websocket):
         #         await wait_for_input(websocket, "Code Formatter", "", section_codes[section])
         
         result = crew.kickoff(inputs=inp2)
-        with open("output_paper.tex", "w") as f:
-            f.write(result.tasks_output[0].raw)
+        latex_content=result.tasks_output[0].raw
+        output_dir = tempfile.mkdtemp()
+        tex_file_path = os.path.join(output_dir, f"{inp2.get('title', 'paper').replace(' ', '_')}.tex")
+        
+        # Save LaTeX file
+        with open(tex_file_path, 'w', encoding='utf-8') as f:
+            f.write(latex_content)
+        user_request = await wait_for_input(websocket, "Code Formatter", "", "Successfully generated LaTex Code. File ready for download, Enter 'download-tex' to download the file and 'download-pdf' to download the pdf")
 
-        await send_message(websocket, "Code Formatter", "", "Successfully generated LaTex Code. File ready for download")
+        if user_request.lower() == 'download-tex':
+            await send_message(websocket, "System", "Sending LaTeX file", "📤 Sending LaTeX file...")
+            success = await send_file(websocket, tex_file_path, "tex")
+            if success:
+                await send_message(websocket, "System", "File sent", "✅ LaTeX file sent successfully!")
+                
+        elif user_request.lower() == 'download-pdf':
+            await send_message(websocket, "System", "Compiling PDF", "🔄 Compiling LaTeX to PDF...")
+            pdf_path = compile_latex_to_pdf(latex_content, output_dir)
+            
+            if pdf_path:
+                await send_message(websocket, "System", "Sending PDF file", "📤 Sending PDF file...")
+                success = await send_file(websocket, pdf_path, "pdf")
+                if success:
+                    await send_message(websocket, "System", "PDF sent", "✅ PDF file sent successfully!")
 
     except websockets.exceptions.ConnectionClosed:
         print(f"Client {client_id} disconnected")

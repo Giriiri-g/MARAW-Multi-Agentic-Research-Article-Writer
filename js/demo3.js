@@ -354,3 +354,44 @@ document.addEventListener('DOMContentLoaded', () => {
 $('#retry').on("click", function() {
             $(this).toggleClass("color-1 color-2");
 });
+
+function requestFile(fileType) {
+    if (isConnected && pipelineCompleted) {
+        const command = fileType === 'tex' ? 'download-tex' : 'download-pdf';
+        const data = { message: command };
+        ws.send(JSON.stringify(data));
+        addMessage('You', `Requesting ${fileType.toUpperCase()} file...`, 'user');
+    }
+}
+
+function downloadFile(base64Data, filename, fileType) {
+    try {
+        // Convert base64 to blob
+        const binaryString = atob(base64Data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        
+        const mimeType = fileType === 'pdf' ? 'application/pdf' : 'text/plain';
+        const blob = new Blob([bytes], { type: mimeType });
+        
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.style.display = 'none';
+        
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        URL.revokeObjectURL(url);
+        
+        addMessage('System', `✅ ${filename} downloaded successfully!`, 'system');
+        
+    } catch (error) {
+        addMessage('System', `❌ Download failed: ${error}`, 'error');
+    }
+}
