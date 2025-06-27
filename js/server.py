@@ -505,8 +505,7 @@ async def handle_client(websocket):
         llm_llama3_3_70B = ChatGroq(
             model_name="llama-3.3-70b-versatile",
             temperature=0.7,
-            max_tokens=1024,
-            api_key="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"
+            api_key="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"
         )
 
         # llm_code = ChatGroq(
@@ -515,7 +514,7 @@ async def handle_client(websocket):
         #     max_tokens=2048,
         #     api_key="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"
         # )
-        os.environ["GROQ_API_KEY"] = "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"
+        os.environ["GROQ_API_KEY"] = "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"
         latex_writer = Agent(
             role='LatexResearchWriter',
             goal='Write a well-structured LaTeX research paper based on provided content',
@@ -533,6 +532,17 @@ async def handle_client(websocket):
         # STEP 3: Define the task
         write_latex_task = Task(
             description=(
+                "title: {title}"
+                "abstract: {abstract}"
+                "authors: {author}"
+                "conference/Journal: {conf}"
+                "keywords: {keywords}"
+                "references: {references}"
+                "introduction: {intro}"
+                "methodology: {methodology}"
+                "results: {results_sec}"
+                "discussion: {discussion}"
+                "conclusion: {conclusion}"
                 "Use the provided paper dictionary to write a complete LaTeX document. "
                 "Format the title, authors, abstract, and each section as a \\section or \\subsection if needed. "
                 "Add a References section at the end using \\bibitem format. "
@@ -641,9 +651,12 @@ async def handle_client(websocket):
         #         section_codes[section] = gen_code(llm_code, section, inp2[section])
         #         await wait_for_input(websocket, "Code Formatter", "", section_codes[section])
         
-        result = crew.kickoff(inputs={"paper_data": inp2})
+        result = crew.kickoff(inputs=inp2)
         with open("output_paper.tex", "w") as f:
             f.write(result.tasks_output[0].raw)
+
+        await send_message(websocket, "Code Formatter", "", "Successfully generated LaTex Code. File ready for download")
+
     except websockets.exceptions.ConnectionClosed:
         print(f"Client {client_id} disconnected")
     except Exception as e:
