@@ -591,9 +591,9 @@ async def handle_client(websocket):
         llm_llama3_3_70B = ChatGroq(
             model_name="llama-3.3-70b-versatile",
             temperature=0.7,
-            api_key="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"
+            api_key=""
         )
-        os.environ["GROQ_API_KEY"] = "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"
+        os.environ["GROQ_API_KEY"] = ""
         latex_writer = Agent(
             role='LatexResearchWriter',
             goal='Write a well-structured LaTeX research paper based on provided content',
