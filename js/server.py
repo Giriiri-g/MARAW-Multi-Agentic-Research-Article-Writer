@@ -538,18 +538,22 @@ def spam_flag(llm, user_input):
 def citation_manager(llm, inp2, section):
     messages = [
         SystemMessage(content=(
-            "You are a citation manager assistant. Your task is to generate proper citations for the given section of a research paper. "
-            "Use the provided section content to identify key references and format them correctly in LaTeX bibitem format."
+            "You are a citation manager assistant. Your task is to find proper citations for the given section of a research paper. "
+            "Use the provided section content to identify key references and related papers."
+            "Your main and only task is to provide a list of references that is relevant to the section"
         )),
         HumanMessage(content=f"Section: {inp2[section]}")
     ]
     response = llm.invoke(messages).content
-    inp2['references'].append(response)
+    inp2['references'][section] = response
     messages = [
         SystemMessage(content=(
-            "You are a citation manager assistant. Your task is to apply proper citations for the given section of a research paper. "
-            "Use the provided section content and citations to identify key reference points and code them correctly."
-            "Provide the full section text with the citations applied in LaTeX format."
+            "You are a citation manager assistant. You are provided with a section of a research paper and a list of relvant citations to that. Your task is to simply apply proper citations for the given section of a research paper. "
+            "Use the provided section content and add citations at necessary places."
+            "Important Rule: the citations should be applied using the author name and not numbered"
+            "Provide the full section text with the citations applied."
+            "You are not allowed to generate other texts explaining your reasoning or explanatory text, your sole and only purpose is to generate the same content but with the addition of the citations."
+            "Do not generate new content in the section"
         )),
         HumanMessage(content=f"Section: {inp2[section]}, Citations: {response}")
     ]
@@ -717,7 +721,6 @@ async def handle_client(websocket):
         
         recurssion_depth=2
         inp2 = clean_inputs(llm_llama3_3_70B, inputs)
-        inp2['references'] = []
         # Abstract
         # result = crew1.kickoff(inputs=inp2)
         # inp2["author_guidelines"] = result.tasks_output[2].raw 
@@ -807,10 +810,10 @@ async def handle_client(websocket):
         inp2['conclusion'] = conclusion
         
         inp2['conclusion'] = conclusion
-        # inp2['references'] = []
-        # for section in inp2.keys():
-        #     if section not in ['results', 'meth_plan', 'contributions', 'problem_statement', 'proposal']:
-        #         inp2 = citation_manager(llm_llama3_3_70B, inp2, section)
+        inp2['references'] = {}
+        for section in inp2.keys():
+            if section in ['results_sec', 'methodology', 'intro', 'discussion', 'conclusion']:
+                inp2 = citation_manager(llm_llama3_3_70B, inp2, section)
 
 
         result = crew.kickoff(inputs=inp2)
