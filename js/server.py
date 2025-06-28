@@ -200,8 +200,9 @@ def gen_intro(llm_llama3_3_70B, inp2, critic=None):
       "1. Start broad by introducing the general research area and its real-world or academic importance.\n"
       "2. Narrow the scope by defining the specific problem or gap, mentioning key challenges and citing related works.\n"
       "3. State the research gap or motivation clearly, explaining why the research is necessary.\n"
-      "4. Present the research objective or hypothesis concisely.\n"
-      "5. Optionally, summarize key contributions in a high-level manner.\n"
+      "4. Refer briefly to existing methods, models, or literature trends that attempt to solve the identified problem, without citing sources explicitly.\n"
+      "5. Present the research objective or hypothesis concisely.\n"
+      "6. Optionally, summarize key contributions in a high-level manner.\n"
       "Maintain a formal and objective tone, avoid jargon or define it clearly, and ensure logical flow and coherence."
   ))
 
@@ -254,6 +255,80 @@ def gen_keywords(llm_llama3_3_70B, inp2, critic=None):
     return keyword
   else:
     return inp2['keywords']
+
+def gen_related_work(llm_llama3_3_70B, inp2, critic=None):
+    system_msg = SystemMessage(content=(
+        "You are an academic writing assistant tasked with generating the 'Related Work' section of a formal research paper. "
+        "Your objective is to produce a comprehensive, critical, and well-structured review of previous work that directly relates to the problem, methodology, and domain of the current study. "
+        "Follow these detailed and strictly enforced guidelines to ensure academic depth, logical organization, and clarity:\n\n"
+
+        "Purpose and Role of the Section:\n"
+        "- Provide essential background to contextualize your work.\n"
+        "- Critically assess prior research relevant to your problem, dataset, methods, or target application.\n"
+        "- Establish what has already been done and identify where your work differs, improves, or fills a gap.\n"
+        "- Build a logical basis for your study’s novelty and justification.\n\n"
+
+        "Structural Guidelines:\n"
+        "- Begin with a high-level paragraph summarizing the broad research area (e.g., deep learning in autism diagnosis).\n"
+        "- Divide the section into clearly delineated thematic categories (e.g., image-based approaches, behavioral modeling, questionnaire analysis, multimodal learning, etc.) if applicable.\n"
+        "- Within each theme, present prior work in a logical order (chronological or by impact/relevance).\n"
+        "- End each thematic subsection with a brief comparative insight or limitation that motivates your study.\n"
+        "- Conclude the entire section with a paragraph that summarizes the gap or insufficiency in prior work that your study addresses.\n\n"
+
+        "Reasoning and Critical Thinking Instructions:\n"
+        "- Go beyond description. For each related study or group of studies:\n"
+        "   • Describe what problem it addressed.\n"
+        "   • Summarize the approach or methodology used.\n"
+        "   • Report outcomes or findings in neutral terms.\n"
+        "   • Comment on strengths or innovations (if any).\n"
+        "   • Point out limitations or constraints (e.g., small datasets, single modality, generalizability issues).\n"
+        "- Avoid merely stating that a method exists; explain its relevance or irrelevance to your approach.\n"
+        "- Carefully reason how your method compares in scope, technique, or result—without exaggeration or subjective language.\n\n"
+
+        "Stylistic and Writing Rules:\n"
+        "- Use a formal and analytical tone throughout.\n"
+        "- Use present tense when referring to facts or methods still in use; past tense for describing individual study results.\n"
+        "- Do not repeat results or contributions already stated in the introduction.\n"
+        "- Avoid excessive quotations or namedropping without context.\n"
+        "- Avoid vague statements like 'Many studies have used AI' without specificity.\n"
+        "- Do not use bullet points in the final output.\n\n"
+
+        "Common Mistakes to Avoid:\n"
+        "- Listing studies without linking them logically.\n"
+        "- Using citations without describing what the cited work actually did.\n"
+        "- Repeating your own study’s methods or results—focus only on prior work.\n"
+        "- Making unsubstantiated claims about being the 'first' or 'only' approach.\n"
+        "- Ignoring relevant but contradictory studies.\n\n"
+
+        "Success Criteria:\n"
+        "- Clear thematic grouping of studies.\n"
+        "- Critical, reasoned comparison with your work.\n"
+        "- Logical transition between paragraphs.\n"
+        "- Final paragraph that clearly articulates the research gap your paper fills.\n"
+        "- Section length appropriate for a journal (typically 600–1200 words).\n\n"
+
+        "Generate a coherent, insightful, and properly structured Related Work section based strictly on the input provided."
+    ))
+
+    human_msg = HumanMessage(content=(
+        f"Title: {inp2['title']}\n"
+        f"Abstract: {inp2['abstract']}\n"
+        f"Introduction: {inp2['intro']}\n"
+        f"Problem Statement: {inp2['problem_statement']}\n"
+        f"Proposal: {inp2['proposal']}\n"
+        f"Contributions: {inp2['contributions']}\n"
+        f"Results: {inp2['results']}\n"
+        f"Critical Guidelines: {critic if critic else 'None'}\n\n"
+        "Using the above information, write the Related Work section of the paper.\n"
+        "- Do not discuss the current work directly except for drawing contrasts at the end.\n"
+        "- If relevant, organize prior work by subfields (e.g., image-based methods, behavioral analysis, etc.).\n"
+        "- Emphasize the methodologies and their limitations, and how they relate to your study’s direction.\n"
+        "- Follow the reasoning and structural instructions in the system message strictly."
+    ))
+
+    related_work = llm_llama3_3_70B.invoke([system_msg, human_msg]).content
+    return related_work
+
 
 def gen_methodology_plan(llm_llama3_3_70B, inp2, critic=None):
   system_msg = SystemMessage(content=(
@@ -380,6 +455,8 @@ def gen_results(llm_llama3_3_70B, inp2, critic=None):
       "- Use consistent terminology and abbreviations.\n"
       "- Keep the length appropriate (typically 500-1000 words).\n"
       "- Avoid mixing interpretation or discussion.\n"
+      "- Where applicable, describe performance trends or error patterns."
+      "- Include non-significant or negative results to maintain transparency."
       "Generate a concise, well-ordered Results section based on the input data.\n"
       "Provide the section as normal text content without any formatting or structural addition."
   ))
@@ -599,15 +676,16 @@ async def handle_client(websocket):
         )
         os.environ["GROQ_API_KEY"] = ""
         latex_writer = Agent(
-            role='LatexResearchWriter',
-            goal='Write a well-structured LaTeX research paper based on provided content',
+            role='LaTeX Research Writer',
+            goal='Write a LaTeX research paper using structured content and formatting guidelines',
             backstory=(
-                "You are a LaTeX formatting expert and an academic writing assistant. "
-                "You know how to take structured content and output a beautifully formatted LaTeX document. "
-                "You use \\section, \\subsection appropriately, and you always include authors, title, abstract, and hardcoded \\bibitem references."
+                "You are a LaTeX formatting and academic writing expert. You transform structured research content into a clean, standards-compliant LaTeX paper. "
+                "You always use proper LaTeX syntax, structure with \\section, \\subsection, and \\bibitem. "
+                "You know how to follow academic formatting guidelines (e.g., IEEE/ACM) and ensure consistent layout, even if some formatting info is missing by using defaults or inferences."
             ),
+            allow_delegation=False,
+            memory=True,
             verbose=True,
-            allow_delegation=False, 
             llm="groq/llama-3.3-70b-versatile",
             api_key=os.environ["GROQ_API_KEY"]
         )
@@ -615,25 +693,35 @@ async def handle_client(websocket):
         # STEP 3: Define the task
         write_latex_task = Task(
             description=(
-                "title: {title}"
-                "abstract: {abstract}"
-                "authors: {author}"
-                "conference/Journal: {conf}"
-                "keywords: {keywords}"
-                "references: {references}"
-                "introduction: {intro}"
-                "methodology: {methodology}"
-                "results: {results_sec}"
-                "discussion: {discussion}"
-                "conclusion: {conclusion}"
-                # "Author Guidelines for the format: {author_guidelines}"
-                "Use the provided paper dictionary to write a complete LaTeX document. "
-                "Format the title, authors, abstract, and each section as a \\section or \\subsection if needed. "
-                "Add a References section at the end using \\bibitem format. "
-                "Ensure all LaTeX syntax is valid and well-structured. "
-                "Your final answer MUST be the entire LaTeX document as a string."
+                "You are provided with structured research paper components as variables. Use only the provided variables to generate a LaTeX document.\n\n"
+                "Variables:\n"
+                "- title: {title}\n"
+                "- abstract: {abstract}\n"
+                "- authors: {author}\n"
+                "- conference/journal: {conf}\n"
+                "- keywords: {keywords}\n"
+                "- references: {references}\n"
+                "- introduction: {intro}\n"
+                "- Related Works: {Related_Works}\n"
+                "- methodology: {methodology}\n"
+                "- results: {results_sec}\n"
+                "- discussion: {discussion}\n"
+                "- conclusion: {conclusion}\n"
+                "- author guidelines: {author_guidelines}\n\n"
+
+                "Instructions:\n"
+                "1. Do NOT add any information that is not explicitly passed in the variables.\n"
+                "2. Format the paper using LaTeX with \\documentclass at the top and \\end document at the bottom.\n"
+                "3. Use \\section for: Introduction, Methodology, Results, Discussion, Conclusion.\n"
+                "4. Add the title using \\title, authors using \\author, and abstract using \\begin abstract .\n"
+                "5. Add keywords below the abstract with a line like: \\textbf Keywords: ...\n"
+                "6. Include a References section using \\begin thebibliography and format each reference using \\bibitem.\n"
+                "7. Follow any formatting constraints or rules in `author_guidelines` to adjust the structure or documentclass.\n\n"
+
+                "Final Requirement:\n"
+                "Return a single valid LaTeX document as a string. Your answer MUST start with \\documentclass and end with \\end document ."
             ),
-            expected_output="A complete LaTeX .tex file content as a string",
+            expected_output="A complete LaTeX document as a string using only the provided fields, with valid LaTeX syntax from \\documentclass to \\end document ",
             agent=latex_writer
         )
 
@@ -643,78 +731,105 @@ async def handle_client(websocket):
             tasks=[write_latex_task],
             process=Process.sequential
         )
-        # from crewai_tools import SerperDevTool, ScrapeWebsiteTool
+        from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 
-        # search_tool = SerperDevTool()
-        # scrape_tool = ScrapeWebsiteTool()
+        search_tool = SerperDevTool()
+        scrape_tool = ScrapeWebsiteTool()
 
-        # search_agent = Agent(
-        # role="ResearchAgent",
-        # goal="Find the official author guidelines page for the specified conference or journal",
-        # backstory="An expert in academic publishing and conference websites. Skilled in using search tools to find submission policies and author instructions.",
-        # tools=[search_tool],
-        # llm="groq/llama-3.3-70b-versatile",
-        # api_key=os.environ["GROQ_API_KEY"],
-        # verbose=False
-        # )
+        search_agent = Agent(
+            role="Search Strategist",
+            goal=(
+                "Use reasoning and internet search to locate the official author/submission guidelines for the given conference or journal. "
+                "Refine your queries if initial attempts don't yield relevant results. Only return links from trusted sources (e.g., IEEE, ACM, Springer)."
+            ),
+            backstory=(
+                "You are an expert researcher specializing in academic publishing. You excel at uncovering hard-to-find author instructions "
+                "by using search engines intelligently. You use step-by-step logic and refine queries as needed, embracing trial-and-error if necessary."
+            ),
+            tools=[search_tool],
+            llm="groq/llama-3.3-70b-versatile",
+            api_key=os.environ["GROQ_API_KEY"],
+            memory=True,
+            verbose=True  # Enable verbose to debug reasoning chain
+        )
 
-        # scraper_agent = Agent(
-        # role="ScraperAgent",
-        # goal="Extract author guidelines and formatting requirements from the identified website",
-        # backstory="A web-scraping specialist that can process HTML pages and extract relevant content for scientific publication guidelines.",
-        # tools=[scrape_tool],
-        # llm="groq/llama-3.3-70b-versatile",
-        # api_key=os.environ["GROQ_API_KEY"],
-        # verbose=False
-        # )
+        scraper_agent = Agent(
+            role="Guideline Extractor",
+            goal=(
+                "Scrape the provided URLs intelligently and extract sections that describe author formatting instructions, "
+                "template types, submission rules, or style guidelines. If the scrape fails, reason about why and suggest next steps."
+            ),
+            backstory=(
+                "You are a web scraping specialist with deep experience navigating complex HTML content. You know where formatting details "
+                "are likely to live on academic sites and use reasoning to determine if you've found the right content or need to escalate."
+            ),
+            tools=[scrape_tool],
+            memory=True,
+            llm="groq/llama-3.3-70b-versatile",
+            api_key=os.environ["GROQ_API_KEY"],
+            verbose=True
+        )
 
-        # summarizer_agent = Agent(
-        # role="SummarizerAgent",
-        # goal="Compile and summarize author guidelines into a structured format suitable for automated LaTeX generation",
-        # backstory="An academic writing assistant that understands publication standards and formats output for AI-powered writing agents.",
-        # llm="groq/llama-3.3-70b-versatile",
-        # api_key=os.environ["GROQ_API_KEY"],
-        # verbose=False
-        # )
+        summarizer_agent = Agent(
+            role="Formatting Analyst",
+            goal=(
+                "Analyze the extracted submission instructions and summarize them in a structured format including: "
+                "Format type, Page Limit, Font, Margins, Columns, Reference Style, and any Template Download links. "
+                "Infer missing fields using context when possible, and clearly state unknowns."
+            ),
+            backstory=(
+                "You are a formatting rules analyst who specializes in decoding conference/journal guidelines. "
+                "You understand IEEE, ACM, Springer, and other major styles, and can infer formatting norms when needed."
+            ),
+            memory=True,
+            verbose=True,
+            llm="groq/llama-3.3-70b-versatile",
+            api_key=os.environ["GROQ_API_KEY"]
+        )
 
-        # # ----------------------------------------------------
+        # ----------------------------------------------------
 
-        # search_task = Task(
-        # description=(
-        # "Search for the official author/submission guidelines page for the specified journal or conference: {conf}. "
-        # "Return the most relevant link(s) that contain formatting instructions or LaTeX templates."
-        # ),
-        # expected_output="A list of 1–3 URLs pointing to the official author/submission guidelines page.",
-        # agent=search_agent
-        # )
+        search_task = Task(
+        description=(
+            "Your goal is to find the official author/submission guidelines page for the specified conference or journal: {conf}. "
+            "Use a search engine and think step-by-step. Consider different search phrases (e.g., 'submission guidelines', 'author instructions', 'paper formatting'). "
+            "If you do not find useful results, refine your search terms and try again. "
+            "Only return links that contain official information from the conference/journal website or a trusted publisher (e.g., IEEE, Springer)."
+        ),
+        expected_output="A list of 1–3 high-quality, official URLs with submission/formatting guidelines.",
+        agent=search_agent
+        )
 
-        # scrape_task = Task(
-        # description=(
-        # "Using the links provided, scrape the page content. "
-        # "Extract details like template format (LaTeX/Word), style files, page limits, font requirements, and reference style."
-        # ),
-        # expected_output="Extracted text containing the official author instructions, submission format, page limits, and any downloadable templates.",
-        # agent=scraper_agent,
-        # context=[search_task]
-        # )
+        scrape_task = Task(
+        description=(
+            "Take the URLs provided and attempt to scrape their content. First, examine whether the page includes keywords like 'LaTeX', 'template', 'formatting', 'submission', or 'page limit'. "
+            "If the content lacks these, consider it a failed scrape. In such cases, suggest to the team that a better link may be needed. "
+            "Extract full sections if available, especially anything under headings like 'Instructions for Authors', 'Submission Format', or 'Paper Template'."
+        ),
+        expected_output="Raw HTML or cleaned text that clearly mentions author guidelines, templates, or submission requirements.",
+        agent=scraper_agent,
+        context=[search_task]
+        )
 
-        # summarize_task = Task(
-        # description=(
-        # "Using the extracted content, summarize the author guidelines into a structured format with the following fields: "
-        # "Format (LaTeX/Word), Page Limit, Font, Margin, Template Download Link, Reference Style, Submission Link."
-        # ),
-        # expected_output="A Summary of author guidelines ready for use by an automated paper writing system.",
-        # agent=summarizer_agent,
-        # context=[scrape_task]
-        # )
+        summarize_task = Task(
+        description=(
+            "Review the extracted content. Reflect on whether the text provides enough detail for each of these fields: "
+            "Format (LaTeX/Word), Page Limit, Font, Margin, Reference Style, Columns, Template Download Links. "
+            "If details are vague, infer based on context (e.g., IEEE-style usually implies two-column format). Be honest about missing fields. "
+            "Present the summary in a bullet list with field names as keys."
+        ),
+        expected_output="A structured summary of the submission guidelines with inferred or confirmed values for each formatting field.",
+        agent=summarizer_agent,
+        context=[scrape_task]
+        )
 
-        # # ----------------------------------------------------
+        # ----------------------------------------------------
 
-        # crew1 = Crew(
-        # agents=[search_agent, scraper_agent, summarizer_agent],
-        # tasks=[search_task, scrape_task, summarize_task],
-        # process=Process.sequential
-        # )
+        crew1 = Crew(
+        agents=[search_agent, scraper_agent, summarizer_agent],
+        tasks=[search_task, scrape_task, summarize_task],
+        process=Process.sequential
+        )
 
         
 
@@ -722,8 +837,8 @@ async def handle_client(websocket):
         recurssion_depth=2
         inp2 = clean_inputs(llm_llama3_3_70B, inputs)
         # Abstract
-        # result = crew1.kickoff(inputs=inp2)
-        # inp2["author_guidelines"] = result.tasks_output[2].raw 
+        result = crew1.kickoff(inputs={'conf': inp2['conf']})
+        inp2["author_guidelines"] = result.tasks_output[2].raw
 
 
         abstract = gen_abstract(llm_llama3_3_70B, inp2)
@@ -764,6 +879,15 @@ async def handle_client(websocket):
             keywords = gen_keywords(llm_llama3_3_70B, inp2, critic)
             critic = await wait_for_input(websocket, "Critic", "", "Keywords: "+keywords)
         inp2['keywords'] = keywords
+
+        literature = gen_related_work(llm_llama3_3_70B, inp2)
+        critic = await wait_for_input(websocket, "Content Generator", "", "Literature Review: "+literature)
+        i=0
+        while critic != "next" and i<recurssion_depth:
+            i+=1
+            literature = gen_related_work(llm_llama3_3_70B, inp2, critic)
+            critic = await wait_for_input(websocket, "Critic", "", "Literature Review: "+literature)
+        inp2['Related_Works'] = literature
 
         # Methodology Plan
         methodology_plan = gen_methodology_plan(llm_llama3_3_70B, inp2)
@@ -812,7 +936,7 @@ async def handle_client(websocket):
         inp2['conclusion'] = conclusion
         inp2['references'] = {}
         for section in inp2.keys():
-            if section in ['results_sec', 'methodology', 'intro', 'discussion', 'conclusion']:
+            if section in ['results_sec', 'methodology', 'intro', 'discussion', 'conclusion', 'Related_Works']:
                 inp2 = citation_manager(llm_llama3_3_70B, inp2, section)
 
 
