@@ -535,6 +535,27 @@ def spam_flag(llm, user_input):
     except ValueError:
         return -1
 
+def citation_manager(llm, inp2, section):
+    messages = [
+        SystemMessage(content=(
+            "You are a citation manager assistant. Your task is to generate proper citations for the given section of a research paper. "
+            "Use the provided section content to identify key references and format them correctly in LaTeX bibitem format."
+        )),
+        HumanMessage(content=f"Section: {inp2[section]}")
+    ]
+    response = llm.invoke(messages).content
+    inp2['references'].append(response)
+    messages = [
+        SystemMessage(content=(
+            "You are a citation manager assistant. Your task is to apply proper citations for the given section of a research paper. "
+            "Use the provided section content and citations to identify key reference points and code them correctly."
+            "Provide the full section text with the citations applied in LaTeX format."
+        )),
+        HumanMessage(content=f"Section: {inp2[section]}, Citations: {response}")
+    ]
+    response = llm.invoke(messages).content
+    inp2[section] = response
+    return inp2
 
 
 
@@ -570,16 +591,9 @@ async def handle_client(websocket):
         llm_llama3_3_70B = ChatGroq(
             model_name="llama-3.3-70b-versatile",
             temperature=0.7,
-            api_key="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"
+            api_key="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"
         )
-
-        # llm_code = ChatGroq(
-        #     model_name="groq/llama-3.3-70b-versatile",
-        #     temperature=0.7,
-        #     max_tokens=2048,
-        #     api_key="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"
-        # )
-        os.environ["GROQ_API_KEY"] = "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"
+        os.environ["GROQ_API_KEY"] = "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"
         latex_writer = Agent(
             role='LatexResearchWriter',
             goal='Write a well-structured LaTeX research paper based on provided content',
@@ -608,7 +622,7 @@ async def handle_client(websocket):
                 "results: {results_sec}"
                 "discussion: {discussion}"
                 "conclusion: {conclusion}"
-                "Author Guidelines for the format: {author_guidelines}"
+                # "Author Guidelines for the format: {author_guidelines}"
                 "Use the provided paper dictionary to write a complete LaTeX document. "
                 "Format the title, authors, abstract, and each section as a \\section or \\subsection if needed. "
                 "Add a References section at the end using \\bibitem format. "
@@ -625,87 +639,88 @@ async def handle_client(websocket):
             tasks=[write_latex_task],
             process=Process.sequential
         )
-        from crewai_tools import SerperDevTool, ScrapeWebsiteTool
+        # from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 
-        search_tool = SerperDevTool()
-        scrape_tool = ScrapeWebsiteTool()
+        # search_tool = SerperDevTool()
+        # scrape_tool = ScrapeWebsiteTool()
 
-        search_agent = Agent(
-        role="ResearchAgent",
-        goal="Find the official author guidelines page for the specified conference or journal",
-        backstory="An expert in academic publishing and conference websites. Skilled in using search tools to find submission policies and author instructions.",
-        tools=[search_tool],
-        llm="groq/llama-3.3-70b-versatile",
-        api_key=os.environ["GROQ_API_KEY"],
-        verbose=False
-        )
+        # search_agent = Agent(
+        # role="ResearchAgent",
+        # goal="Find the official author guidelines page for the specified conference or journal",
+        # backstory="An expert in academic publishing and conference websites. Skilled in using search tools to find submission policies and author instructions.",
+        # tools=[search_tool],
+        # llm="groq/llama-3.3-70b-versatile",
+        # api_key=os.environ["GROQ_API_KEY"],
+        # verbose=False
+        # )
 
-        scraper_agent = Agent(
-        role="ScraperAgent",
-        goal="Extract author guidelines and formatting requirements from the identified website",
-        backstory="A web-scraping specialist that can process HTML pages and extract relevant content for scientific publication guidelines.",
-        tools=[scrape_tool],
-        llm="groq/llama-3.3-70b-versatile",
-        api_key=os.environ["GROQ_API_KEY"],
-        verbose=False
-        )
+        # scraper_agent = Agent(
+        # role="ScraperAgent",
+        # goal="Extract author guidelines and formatting requirements from the identified website",
+        # backstory="A web-scraping specialist that can process HTML pages and extract relevant content for scientific publication guidelines.",
+        # tools=[scrape_tool],
+        # llm="groq/llama-3.3-70b-versatile",
+        # api_key=os.environ["GROQ_API_KEY"],
+        # verbose=False
+        # )
 
-        summarizer_agent = Agent(
-        role="SummarizerAgent",
-        goal="Compile and summarize author guidelines into a structured format suitable for automated LaTeX generation",
-        backstory="An academic writing assistant that understands publication standards and formats output for AI-powered writing agents.",
-        llm="groq/llama-3.3-70b-versatile",
-        api_key=os.environ["GROQ_API_KEY"],
-        verbose=False
-        )
+        # summarizer_agent = Agent(
+        # role="SummarizerAgent",
+        # goal="Compile and summarize author guidelines into a structured format suitable for automated LaTeX generation",
+        # backstory="An academic writing assistant that understands publication standards and formats output for AI-powered writing agents.",
+        # llm="groq/llama-3.3-70b-versatile",
+        # api_key=os.environ["GROQ_API_KEY"],
+        # verbose=False
+        # )
 
-        # ----------------------------------------------------
+        # # ----------------------------------------------------
 
-        search_task = Task(
-        description=(
-        "Search for the official author/submission guidelines page for the specified journal or conference: {conf}. "
-        "Return the most relevant link(s) that contain formatting instructions or LaTeX templates."
-        ),
-        expected_output="A list of 1–3 URLs pointing to the official author/submission guidelines page.",
-        agent=search_agent
-        )
+        # search_task = Task(
+        # description=(
+        # "Search for the official author/submission guidelines page for the specified journal or conference: {conf}. "
+        # "Return the most relevant link(s) that contain formatting instructions or LaTeX templates."
+        # ),
+        # expected_output="A list of 1–3 URLs pointing to the official author/submission guidelines page.",
+        # agent=search_agent
+        # )
 
-        scrape_task = Task(
-        description=(
-        "Using the links provided, scrape the page content. "
-        "Extract details like template format (LaTeX/Word), style files, page limits, font requirements, and reference style."
-        ),
-        expected_output="Extracted text containing the official author instructions, submission format, page limits, and any downloadable templates.",
-        agent=scraper_agent,
-        context=[search_task]
-        )
+        # scrape_task = Task(
+        # description=(
+        # "Using the links provided, scrape the page content. "
+        # "Extract details like template format (LaTeX/Word), style files, page limits, font requirements, and reference style."
+        # ),
+        # expected_output="Extracted text containing the official author instructions, submission format, page limits, and any downloadable templates.",
+        # agent=scraper_agent,
+        # context=[search_task]
+        # )
 
-        summarize_task = Task(
-        description=(
-        "Using the extracted content, summarize the author guidelines into a structured format with the following fields: "
-        "Format (LaTeX/Word), Page Limit, Font, Margin, Template Download Link, Reference Style, Submission Link."
-        ),
-        expected_output="A Summary of author guidelines ready for use by an automated paper writing system.",
-        agent=summarizer_agent,
-        context=[scrape_task]
-        )
+        # summarize_task = Task(
+        # description=(
+        # "Using the extracted content, summarize the author guidelines into a structured format with the following fields: "
+        # "Format (LaTeX/Word), Page Limit, Font, Margin, Template Download Link, Reference Style, Submission Link."
+        # ),
+        # expected_output="A Summary of author guidelines ready for use by an automated paper writing system.",
+        # agent=summarizer_agent,
+        # context=[scrape_task]
+        # )
 
-        # ----------------------------------------------------
+        # # ----------------------------------------------------
 
-        crew1 = Crew(
-        agents=[search_agent, scraper_agent, summarizer_agent],
-        tasks=[search_task, scrape_task, summarize_task],
-        process=Process.sequential
-        )
+        # crew1 = Crew(
+        # agents=[search_agent, scraper_agent, summarizer_agent],
+        # tasks=[search_task, scrape_task, summarize_task],
+        # process=Process.sequential
+        # )
 
         
 
         
         recurssion_depth=2
         inp2 = clean_inputs(llm_llama3_3_70B, inputs)
+        inp2['references'] = []
         # Abstract
-        result = crew1.kickoff(inputs=inp2)
-        inp2["author_guidelines"] = result.tasks_output[2].raw 
+        # result = crew1.kickoff(inputs=inp2)
+        # inp2["author_guidelines"] = result.tasks_output[2].raw 
 
 
         abstract = gen_abstract(llm_llama3_3_70B, inp2)
@@ -790,12 +805,14 @@ async def handle_client(websocket):
             conclusion = gen_conclusion(llm_llama3_3_70B, inp2, critic)
             critic = await wait_for_input(websocket, "Critic", "", "Conclusion: "+conclusion)
         inp2['conclusion'] = conclusion
-        # section_codes = {}
-        # for section in inp2:
-        #     if section not in ['results', 'meth_plan', 'contributions', 'problem_statement', 'proposal']:
-        #         section_codes[section] = gen_code(llm_code, section, inp2[section])
-        #         await wait_for_input(websocket, "Code Formatter", "", section_codes[section])
         
+        inp2['conclusion'] = conclusion
+        # inp2['references'] = []
+        # for section in inp2.keys():
+        #     if section not in ['results', 'meth_plan', 'contributions', 'problem_statement', 'proposal']:
+        #         inp2 = citation_manager(llm_llama3_3_70B, inp2, section)
+
+
         result = crew.kickoff(inputs=inp2)
         latex_content=result.tasks_output[0].raw
         output_dir = tempfile.mkdtemp()

@@ -1,4 +1,6 @@
 langchain_groq
 crewai
+websockets
+pypdf
 crewai_tools
 groq
