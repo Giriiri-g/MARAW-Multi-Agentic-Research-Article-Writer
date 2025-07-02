@@ -70,10 +70,53 @@
         </div>
         <div class="form-footer">
           <a href="#">Create New Account?</a>
-          <a href="#">Forgot Password?</a>
         </div>
         <div class="submit-btn-wrapper">
           <button type="submit" class="login-submit">Login</button>
+        </div>
+      </form>
+    </div>
+    <div id="signup-body">
+      <div class="login-header">
+        <span class="login-title">Sign Up</span>
+        <button id="signup-close">X</button>
+      </div>
+      <form id="signupForm" novalidate>
+        <div>
+          <div class="form-header" id="fullname-header">
+            <label for="fullname">Full Name</label>
+          </div>
+          <input id="fullname" type="text" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="email-header">
+            <label for="email">Email</label>
+          </div>
+          <input id="email" type="email" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="signup-username-header">
+            <label for="signup-username">Username</label>
+          </div>
+          <input id="signup-username" type="text" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="signup-password-header">
+            <label for="signup-password">Password</label>
+          </div>
+          <input id="signup-password" type="password" required class="form-field" />
+        </div>
+        <div>
+          <div class="form-header" id="confirm-password-header">
+            <label for="confirm-password">Confirm Password</label>
+          </div>
+          <input id="confirm-password" type="password" required class="form-field" />
+        </div>
+        <div class="form-footer">
+          <a href="#">Already have an account?</a>
+        </div>
+        <div class="submit-btn-wrapper">
+          <button type="submit" class="login-submit">Sign Up</button>
         </div>
       </form>
     </div>
@@ -83,23 +126,109 @@
     <div id="contactpop">
       <div class="con-header">
         <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
-        <button type="button" onclick="contactclose()">X</button>
+        <button type="button" class="close-btn" onclick="contactclose()">X</button>
       </div>
 
-      <form>
+
+
+      <form id="contact-form">
         <div class="mb-4">
-          <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
-          <input type="text" class="form-control" id="name1" placeholder="Your name">
+          <div class="field-header" id="name-header">
+            <label for="name1" class="form-label">Name *</label>
+          </div>
+          <input type="text" class="form-control" id="name1" placeholder="Your full name">
         </div>
+
         <div class="mb-4">
-          <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label></div>
+          <div class="field-header" id="email-header">
+            <label for="email1" class="form-label">Email address *</label>
+          </div>
           <input type="email" class="form-control" id="email1" placeholder="name@example.com">
         </div>
+
         <div class="mb-4">
-          <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label></div>
-          <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+          <div class="field-header" id="phone-header">
+            <label for="phone1" class="form-label">Phone (Optional)</label>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <select class="form-control" id="country-code" style="flex: 0 0 120px;">
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+82">🇰🇷 +82</option>
+              <option value="+7">🇷🇺 +7</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+31">🇳🇱 +31</option>
+            </select>
+            <input type="tel" class="form-control" id="phone1" placeholder="123-456-7890" style="flex: 1;">
+          </div>
         </div>
-        <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+
+        <div class="mb-4">
+          <div class="field-header" id="subject-header">
+            <label for="subject1" class="form-label">Subject *</label>
+          </div>
+          <select class="form-control" id="subject1">
+            <option value="">Select a subject</option>
+            <option value="general">General Inquiry</option>
+            <option value="support">Technical Support</option>
+            <option value="sales">Sales Question</option>
+            <option value="feedback">Feedback</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <div class="field-header" id="message-header">
+            <label for="message1" class="form-label">Message *</label>
+          </div>
+          <textarea class="form-control" id="message1" rows="2" placeholder="Please describe your inquiry in detail..."
+            maxlength="1000"></textarea>
+          <div class="char-counter" id="message-counter">0 / 1000 characters</div>
+        </div>
+
+        <div class="mb-4">
+          <div class="field-header">
+            <label class="form-label">Attachments (Optional)</label>
+          </div>
+          <button type="button" id="file-select-btn" class="form-control"
+            style="background: transparent; border: 1px dashed #ddd; cursor: pointer; text-align: center; padding: 10px;">
+            📎 Click to select files
+            <br><small style="color: #666;">Max 5MB per file. Supported: PDF, DOC, DOCX, JPG, PNG</small>
+          </button>
+          <input type="file" id="file-input" style="display: none;" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+          <div class="file-list" id="file-list"></div>
+        </div>
+
+        <div class="contact-footer-option-wrapper">
+          <div class="mb-4">
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="newsletter" style="margin: 0;">
+              Subscribe to our newsletter for updates
+            </label>
+          </div>
+
+          <div class="mb-4">
+            <label style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="privacy" style="margin: 0;" required>
+              I agree to the <a href="#" target="_blank">Privacy Policy</a> *
+            </label>
+          </div>
+        </div>
+
+        <div id="form-messages"></div>
+
+        <div class="submit-btn-wrapper">
+          <button type="submit" id="contact-submit">Send Message</button>
+        </div>
       </form>
     </div>
   </div>
