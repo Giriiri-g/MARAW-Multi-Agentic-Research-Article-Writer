@@ -2,9 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-width: none;
 }
 
-html{
+html {
     background-color: #000;
 }
 
@@ -21,7 +22,9 @@ body {
 header {
     position: absolute;
     top: 0;
-    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 98vw;
     height: 4rem;
     display: flex;
     justify-content: center;
@@ -30,6 +33,7 @@ header {
     background-color: rgba(26, 26, 26, 0.82);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.125);
+    margin-inline: auto;
 }
 
 nav {
@@ -296,6 +300,25 @@ nav {
 /* Blob Animation Styles */
 /*  */
 
+.blob-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    backdrop-filter: blur(80px);
+}
+
+.blob-wrapper {
+    z-index: -2;
+    backdrop-filter: blur(80px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
 
 
 .shape-blob {
@@ -381,10 +404,9 @@ nav {
 
 
 .pricing-main {
-    backdrop-filter: blur(80px);
     max-width: 1400px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 150px 2rem;
     padding-bottom: 10rem;
 }
 
@@ -465,6 +487,7 @@ nav {
 }
 
 .pricing-plan-price .period {
+    margin-left: 3px;
     font-size: 1rem;
     color: #aaa;
     font-weight: normal;
@@ -526,12 +549,12 @@ nav {
 
 
 .rate-table th {
-  border-bottom: 1px solid #333;
+    border-bottom: 1px solid #333;
 }
 
 .rate-table td,
 .rate-table th {
-  padding: 0.75rem 1rem;
+    padding: 0.75rem 1rem;
 }
 
 

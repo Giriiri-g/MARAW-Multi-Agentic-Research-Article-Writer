@@ -41,235 +41,242 @@
     </div>
 </header>
 
-  <div class="shape-blob"></div>
-  <div class="shape-blob two"></div>
+<body>
 
-<main class="pricing-main">
-    <div class="pricing-cards-container">
-        <div class="pricing-card">
-            <h3 class="pricing-plan-name">FREE</h3>
-            <p class="pricing-plan-description">Forever free, perfect to explore MARAW</p>
-            <div class="pricing-plan-price">
-                <span class="currency">$</span>0<span class="period">/mo</span>
-            </div>
-            <ul class="pricing-plan-features">
-                <li>1,000 tokens / mo</li>
-                <li>Single-column format</li>
-                <li>Community support</li>
-                <li>Basic citation mining</li>
-            </ul>
-            <a href="#" class="pricing-plan-button">Select Free</a>
-        </div>
 
-        <div class="pricing-card featured">
-            <h3 class="pricing-plan-name">RESEARCH STUDENT</h3>
-            <p class="pricing-plan-description">For academics & grad students</p>
-            <div class="pricing-plan-price">
-                <span class="currency">$</span>19<span class="period">/mo</span>
-            </div>
-            <ul class="pricing-plan-features">
-                <li>100,000 tokens / mo</li>
-                <li>Double-column & IEEE/Springer</li>
-                <li>Priority email support</li>
-                <li>Advanced citation & formatting</li>
-            </ul>
-            <a href="#" class="pricing-plan-button primary">Select Student</a>
-        </div>
-
-        <div class="pricing-card">
-            <h3 class="pricing-plan-name">ENTERPRISE</h3>
-            <p class="pricing-plan-description">Custom solutions for teams</p>
-            <div class="pricing-plan-price">
-                <span style="font-size: 1.5rem;">Contact</span><span class="period">us</span>
-            </div>
-            <ul class="pricing-plan-features">
-                <li>Custom token quotas</li>
-                <li>API & SSO integration</li>
-                <li>Dedicated support & SLA</li>
-                <li>On-prem or cloud hosting</li>
-            </ul>
-            <a href="#" class="pricing-plan-button">Contact Sales</a>
-        </div>
-    </div>
-
-    <section class="px-6 pb-12">
-        <h2 class="text-2xl font-bold mb-4">Rate Limits & Quotas</h2>
-        <div class="overflow-x-auto">
-            <table class="rate-table w-full text-left table-auto">
-                <thead>
-                    <tr>
-                        <th class="text-gray-300">Parameter</th>
-                        <th class="text-gray-300">Free</th>
-                        <th class="text-gray-300">Student</th>
-                        <th class="text-gray-300">Enterprise</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Max Context Window</td>
-                        <td>8K tokens</td>
-                        <td>32K tokens</td>
-                        <td>64K+ tokens</td>
-                    </tr>
-                    <tr>
-                        <td>Requests / Minute</td>
-                        <td>10 RPM</td>
-                        <td>60 RPM</td>
-                        <td>Custom</td>
-                    </tr>
-                    <tr>
-                        <td>Document Upload Size</td>
-                        <td>1 MB</td>
-                        <td>10 MB</td>
-                        <td>Unlimited</td>
-                    </tr>
-                    <tr>
-                        <td>Concurrent Streams</td>
-                        <td>1</td>
-                        <td>5</td>
-                        <td>Custom</td>
-                    </tr>
-                    <tr>
-                        <td>Monthly Usage Cap</td>
-                        <td>1,000 tokens</td>
-                        <td>100,000 tokens</td>
-                        <td>Custom</td>
-                    </tr>
-                    <tr>
-                        <td>Plagiarism Checks / Day</td>
-                        <td>50</td>
-                        <td>500</td>
-                        <td>Custom</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</main>
-
-<div id="login-overlay">
-    <div id="login-body">
-        <div class="login-header">
-            <span class="login-title">Login</span>
-            <button id="login-close">X</button>
-        </div>
-        <form id="loginForm" novalidate>
-            <div>
-                <div class="form-header" id="username-header">
-                    <label for="username">Username</label>
+    <main class="pricing-main">
+        <div class="pricing-cards-container">
+            <div class="pricing-card">
+                <h3 class="pricing-plan-name">FREE</h3>
+                <p class="pricing-plan-description">Forever free, perfect to explore MARAW</p>
+                <div class="pricing-plan-price">
+                    <span class="currency">$</span>0<span class="period">/mo</span>
                 </div>
-                <input id="username" type="text" required class="form-field" />
-            </div>
-            <div>
-                <div class="form-header" id="password-header">
-                    <label for="password">Password</label>
-                </div>
-                <input id="password" type="password" required class="form-field" />
-            </div>
-            <div class="form-footer">
-                <a href="#">Create New Account?</a>
-                <a href="#">Forgot Password?</a>
-            </div>
-            <div class="submit-btn-wrapper">
-                <button type="submit" class="login-submit">Login</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="contactoverlay">
-    <div id="contactpop">
-        <div class="con-header">
-            <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
-            <button type="button" onclick="contactclose()">X</button>
-        </div>
-
-        <form>
-            <div class="mb-4">
-                <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
-                <input type="text" class="form-control" id="name1" placeholder="Your name">
-            </div>
-            <div class="mb-4">
-                <div class="field-header" id="email-header"><label for="email1" class="form-label">Email address</label>
-                </div>
-                <input type="email" class="form-control" id="email1" placeholder="name@example.com">
-            </div>
-            <div class="mb-4">
-                <div class="field-header" id="message-header"><label for="message1" class="form-label">Message</label>
-                </div>
-                <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
-            </div>
-            <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
-        </form>
-    </div>
-</div>
-
-<footer class="footer">
-    <div class="footer-container">
-        <div class="footer-content">
-            <!-- Brand Section -->
-            <div class="footer-brand">
-                <h3>MARAW</h3>
-                <p>Empowering innovation through cutting-edge AI solutions and advanced research tools. Building the
-                    future
-                    of intelligent automation, one project at a time.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
-                    <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
-                    <a href="#" class="social-link" aria-label="GitHub">⚡</a>
-                    <a href="#" class="social-link" aria-label="Discord">💬</a>
-                </div>
-            </div>
-
-            <!-- Products Column -->
-            <div class="footer-column">
-                <h4>Products</h4>
-                <ul class="footer-links">
-                    <li><a href="#">AI Tools</a></li>
-                    <li><a href="#">Research Platform</a></li>
-                    <li><a href="#">Cloud Hosting</a></li>
-                    <li><a href="#">API Access</a></li>
-                    <li><a href="#">Enterprise</a></li>
+                <ul class="pricing-plan-features">
+                    <li>1,000 tokens / mo</li>
+                    <li>Single-column format</li>
+                    <li>Community support</li>
+                    <li>Basic citation mining</li>
                 </ul>
+                <a href="#" class="pricing-plan-button">Select Free</a>
             </div>
 
-            <!-- Resources Column -->
-            <div class="footer-column">
-                <h4>Resources</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Documentation</a></li>
-                    <li><a href="#">Tutorials</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Community</a></li>
-                    <li><a href="#">Support</a></li>
+            <div class="pricing-card featured">
+                <h3 class="pricing-plan-name">RESEARCH STUDENT</h3>
+                <p class="pricing-plan-description">For academics & grad students</p>
+                <div class="pricing-plan-price">
+                    <span class="currency">$</span>19<span class="period">/mo</span>
+                </div>
+                <ul class="pricing-plan-features">
+                    <li>100,000 tokens / mo</li>
+                    <li>Double-column & IEEE/Springer</li>
+                    <li>Priority email support</li>
+                    <li>Advanced citation & formatting</li>
                 </ul>
+                <a href="#" class="pricing-plan-button primary">Select Student</a>
             </div>
 
-            <!-- Company Column -->
-            <div class="footer-column">
-                <h4>Company</h4>
-                <ul class="footer-links">
-                    <li><a href="#about-section">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Partners</a></li>
+            <div class="pricing-card">
+                <h3 class="pricing-plan-name">ENTERPRISE</h3>
+                <p class="pricing-plan-description">Custom solutions for teams</p>
+                <div class="pricing-plan-price">
+                    <span style="font-size: 1.5rem;">Contact</span><span class="period">us</span>
+                </div>
+                <ul class="pricing-plan-features">
+                    <li>Custom token quotas</li>
+                    <li>API & SSO integration</li>
+                    <li>Dedicated support & SLA</li>
+                    <li>On-prem or cloud hosting</li>
                 </ul>
+                <a href="#" class="pricing-plan-button">Contact Sales</a>
             </div>
         </div>
 
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <p>&copy; 2025 MARAW. All rights reserved.</p>
-            <div class="footer-bottom-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookies</a>
-                <a href="#">Legal</a>
+        <section class="px-6 pb-12">
+            <h2 class="text-2xl font-bold mb-4">Rate Limits & Quotas</h2>
+            <div class="overflow-x-auto">
+                <table class="rate-table w-full text-left table-auto">
+                    <thead>
+                        <tr>
+                            <th class="text-gray-300">Parameter</th>
+                            <th class="text-gray-300">Free</th>
+                            <th class="text-gray-300">Student</th>
+                            <th class="text-gray-300">Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Max Context Window</td>
+                            <td>8K tokens</td>
+                            <td>32K tokens</td>
+                            <td>64K+ tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Requests / Minute</td>
+                            <td>10 RPM</td>
+                            <td>60 RPM</td>
+                            <td>Custom</td>
+                        </tr>
+                        <tr>
+                            <td>Document Upload Size</td>
+                            <td>1 MB</td>
+                            <td>10 MB</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Concurrent Streams</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>Custom</td>
+                        </tr>
+                        <tr>
+                            <td>Monthly Usage Cap</td>
+                            <td>1,000 tokens</td>
+                            <td>100,000 tokens</td>
+                            <td>Custom</td>
+                        </tr>
+                        <tr>
+                            <td>Plagiarism Checks / Day</td>
+                            <td>50</td>
+                            <td>500</td>
+                            <td>Custom</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </section>
+    </main>
+    <div class="blob-overlay"></div>
+    <div class="blob-wrapper">
+        <div class="shape-blob"></div>
+        <div class="shape-blob two"></div>
+    </div>
+
+    <div id="login-overlay">
+        <div id="login-body">
+            <div class="login-header">
+                <span class="login-title">Login</span>
+                <button id="login-close">X</button>
+            </div>
+            <form id="loginForm" novalidate>
+                <div>
+                    <div class="form-header" id="username-header">
+                        <label for="username">Username</label>
+                    </div>
+                    <input id="username" type="text" required class="form-field" />
+                </div>
+                <div>
+                    <div class="form-header" id="password-header">
+                        <label for="password">Password</label>
+                    </div>
+                    <input id="password" type="password" required class="form-field" />
+                </div>
+                <div class="form-footer">
+                    <a href="#">Create New Account?</a>
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <div class="submit-btn-wrapper">
+                    <button type="submit" class="login-submit">Login</button>
+                </div>
+            </form>
         </div>
     </div>
-</footer>
+
+    <div id="contactoverlay">
+        <div id="contactpop">
+            <div class="con-header">
+                <h3 class="con-title" id="popupModalLabel">Contact Us</h3>
+                <button type="button" onclick="contactclose()">X</button>
+            </div>
+
+            <form>
+                <div class="mb-4">
+                    <div class="field-header" id="name-header"><label for="name1" class="form-label">Name</label></div>
+                    <input type="text" class="form-control" id="name1" placeholder="Your name">
+                </div>
+                <div class="mb-4">
+                    <div class="field-header" id="email-header"><label for="email1" class="form-label">Email
+                            address</label>
+                    </div>
+                    <input type="email" class="form-control" id="email1" placeholder="name@example.com">
+                </div>
+                <div class="mb-4">
+                    <div class="field-header" id="message-header"><label for="message1"
+                            class="form-label">Message</label>
+                    </div>
+                    <textarea class="form-control" id="message1" rows="4" placeholder="Your message"></textarea>
+                </div>
+                <div class="submit-btn-wrapper"><button type="submit" id="contact-submit">Send Message</button></div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <!-- Brand Section -->
+                <div class="footer-brand">
+                    <h3>MARAW</h3>
+                    <p>Empowering innovation through cutting-edge AI solutions and advanced research tools. Building the
+                        future
+                        of intelligent automation, one project at a time.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Twitter">𝕏</a>
+                        <a href="#" class="social-link" aria-label="LinkedIn">💼</a>
+                        <a href="#" class="social-link" aria-label="GitHub">⚡</a>
+                        <a href="#" class="social-link" aria-label="Discord">💬</a>
+                    </div>
+                </div>
+
+                <!-- Products Column -->
+                <div class="footer-column">
+                    <h4>Products</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">AI Tools</a></li>
+                        <li><a href="#">Research Platform</a></li>
+                        <li><a href="#">Cloud Hosting</a></li>
+                        <li><a href="#">API Access</a></li>
+                        <li><a href="#">Enterprise</a></li>
+                    </ul>
+                </div>
+
+                <!-- Resources Column -->
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company Column -->
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#about-section">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2025 MARAW. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookies</a>
+                    <a href="#">Legal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
 </body>
