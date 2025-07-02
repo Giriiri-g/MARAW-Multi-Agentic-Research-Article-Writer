@@ -604,6 +604,7 @@ $(document).ready(function () {
 
   // Form openers/closers
   $('#contactBtn').click(showContact);
+  $('#contactfooter').click(showContact);
   $('#contactoverlay').on('click', e => {
     if (e.target === e.currentTarget) hideContact();
   });
