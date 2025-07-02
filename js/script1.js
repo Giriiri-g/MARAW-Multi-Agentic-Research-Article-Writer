@@ -803,7 +803,7 @@ class Carousel {
 
   calculateDimensions() {
     this.containerWidth = this.container.offsetWidth;
-    this.trackWidth = this.cards.length * this.containerWidth;
+    this.trackWidth = this.cards.length * (this.containerWidth * 0.7);
     this.maxOffset = this.trackWidth - this.containerWidth;
     this.updateBoundaryStates();
     this.checkViewportPosition();
@@ -815,7 +815,7 @@ class Carousel {
     const sectionCenter = rect.top + (rect.height / 2);
     const viewportCenter = viewportHeight / 2;
 
-    // Check if the center of the tools section is at or past the center of the viewport
+    // Check if the center of the tools section is at or above the center of the viewport
     this.isInViewport = sectionCenter <= viewportCenter;
 
     // Start or stop auto-scroll based on viewport position
