@@ -467,6 +467,7 @@ option {
 /*   slide 2   */
 
 .container {
+    overflow-x: hidden;
     position: relative;
     width: 100%;
     min-height: 100vh;
