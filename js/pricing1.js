@@ -673,4 +673,3 @@ $(document).ready(function () {
   // Initialize
   updateCharCounter();
 });
-
