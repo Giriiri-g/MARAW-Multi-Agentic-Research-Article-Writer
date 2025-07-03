@@ -1,4 +1,4 @@
-from crewai import Agent, Task, Crew, Process
+from crewai import Agent, Task, Crew, Process, LLM
 from langchain_groq import ChatGroq
 from langchain_core.runnables import RunnableLambda
 from langchain_core.messages import SystemMessage, HumanMessage
@@ -638,6 +638,75 @@ def citation_manager(llm, inp2, section):
     inp2[section] = response
     return inp2
 
+def gen_tex(llm, inp2):
+    system_prompt = (
+        "You are a LaTeX formatting and academic writing expert. You transform structured research content into a clean, standards-compliant LaTeX paper. "
+        "You always use proper LaTeX syntax, structure with \\section, \\subsection, and \\bibitem. "
+        "You know how to follow academic formatting guidelines (e.g., IEEE/ACM) and ensure consistent layout, even if some formatting info is missing by using defaults or inferences."
+    )
+
+    user_prompt = f"""
+    You are provided with structured research paper components as variables. Use only the provided variables to generate a LaTeX document.
+
+    Variables:
+    - title: {inp2.get('title', '')}
+    - abstract: {inp2.get('abstract', '')}
+    - authors: {inp2.get('author', '')}
+    - conference/journal: {inp2.get('conf', '')}
+    - keywords: {inp2.get('keywords', '')}
+    - references: {inp2.get('references', '')}
+    - introduction: {inp2.get('intro', '')}
+    - Related Works: {inp2.get('Related_Works', '')}
+    - methodology: {inp2.get('methodology', '')}
+    - results: {inp2.get('results_sec', '')}
+    - discussion: {inp2.get('discussion', '')}
+    - conclusion: {inp2.get('conclusion', '')}
+
+    Instructions:
+    1. Do NOT add any information that is not explicitly passed in the variables.
+    2. Format the paper using LaTeX with \\documentclass at the top and \\end document at the bottom.
+    3. Use \\section for: Introduction, Methodology, Results, Discussion, Conclusion.
+    4. Add the title using \\title, authors using \\author, and abstract using \\begin{{abstract}} ... \\end{{abstract}}.
+    5. Add keywords below the abstract with a line like: \\textbf{{Keywords}}: ...
+    6. Include a References section using \\begin{{thebibliography}} and format each reference using \\bibitem.
+    7. Follow any formatting constraints or rules in author_guidelines to adjust the structure or documentclass.
+
+    Final Requirement:
+    Return a single valid LaTeX document as a string. Your answer MUST start with \\documentclass and end with \\end{{document}}.
+    """
+
+    messages = [
+        ("system", system_prompt),
+        ("user", user_prompt),
+    ]
+
+    response = llm.invoke(messages).content
+    return response
+
+
+def gen_guidelines(llm, inp2):
+    system_prompt = (
+        "You are an expert researcher assistant specialized in finding and interpreting "
+        "submission requirements from academic journals and conferences."
+    )
+
+    user_prompt = f"""
+    Search the web for the author submission guidelines for the journal or conference named: '{inp2.get('conf', '')}'.
+
+    Once found, scrape the guideline content from the most reliable source (typically the official site).
+
+    Use your search tool to find the relevant webpage and use your scraping tool to extract the content.
+
+    Your final output MUST be a structured list of submission steps or rules, clearly formatted and concise.
+    """
+
+    messages = [
+        ("system", system_prompt),
+        ("user", user_prompt),
+    ]
+
+    response = llm.invoke(messages).content
+    return response
 
 
 async def handle_client(websocket):
@@ -668,13 +737,22 @@ async def handle_client(websocket):
         for key, message in input_prompts:
             inputs[key] = await wait_for_input(websocket, "Planner", "", message)
         
+        os.environ["GROQ_API_KEY"] = "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"
+        os.environ["GEMINI_API_KEY"] = "AIzaSyBeOIpEcN6Z-wCC1khjjOkQBb9Sgiz9Hvc"
+        os.environ["SERPER_API_KEY"] = "4709390a588f318ddbe2683e2af48074be1db0de"
         # Clean inputs
         llm_llama3_3_70B = ChatGroq(
             model_name="llama-3.3-70b-versatile",
             temperature=0.7,
-            api_key=""
+            max_tokens=1024,
+            api_key=os.environ["GROQ_API_KEY"]
         )
-        os.environ["GROQ_API_KEY"] = ""
+
+        gemini_llm = LLM(
+            model='gemini/gemini-2.0-flash',
+            api_key=os.environ["GEMINI_API_KEY"],
+            temperature=0.5  # Lower temperature for more consistent results.
+        )
         latex_writer = Agent(
             role='LaTeX Research Writer',
             goal='Write a LaTeX research paper using structured content and formatting guidelines',
@@ -747,8 +825,7 @@ async def handle_client(websocket):
                 "by using search engines intelligently. You use step-by-step logic and refine queries as needed, embracing trial-and-error if necessary."
             ),
             tools=[search_tool],
-            llm="groq/llama-3.3-70b-versatile",
-            api_key=os.environ["GROQ_API_KEY"],
+            llm=gemini_llm,
             memory=True,
             verbose=True  # Enable verbose to debug reasoning chain
         )
@@ -765,8 +842,7 @@ async def handle_client(websocket):
             ),
             tools=[scrape_tool],
             memory=True,
-            llm="groq/llama-3.3-70b-versatile",
-            api_key=os.environ["GROQ_API_KEY"],
+            llm=gemini_llm,
             verbose=True
         )
 
@@ -783,8 +859,7 @@ async def handle_client(websocket):
             ),
             memory=True,
             verbose=True,
-            llm="groq/llama-3.3-70b-versatile",
-            api_key=os.environ["GROQ_API_KEY"]
+            llm=gemini_llm
         )
 
         # ----------------------------------------------------
@@ -837,8 +912,8 @@ async def handle_client(websocket):
         recurssion_depth=2
         inp2 = clean_inputs(llm_llama3_3_70B, inputs)
         # Abstract
-        result = crew1.kickoff(inputs={'conf': inp2['conf']})
-        inp2["author_guidelines"] = result.tasks_output[2].raw
+        # result = crew1.kickoff(inputs={'conf': inp2['conf']})
+        inp2["author_guidelines"] = gen_guidelines(llm_llama3_3_70B, inp2)
 
 
         abstract = gen_abstract(llm_llama3_3_70B, inp2)
@@ -940,8 +1015,9 @@ async def handle_client(websocket):
                 inp2 = citation_manager(llm_llama3_3_70B, inp2, section)
 
 
-        result = crew.kickoff(inputs=inp2)
-        latex_content=result.tasks_output[0].raw
+        # result = crew.kickoff(inputs=inp2)
+        # latex_content=result.tasks_output[0].raw
+        latex_content = gen_tex(llm_llama3_3_70B, inp2)
         output_dir = tempfile.mkdtemp()
         tex_file_path = os.path.join(output_dir, f"{inp2.get('title', 'paper').replace(' ', '_')}.tex")
         
