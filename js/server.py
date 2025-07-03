@@ -1007,8 +1007,6 @@ async def handle_client(websocket):
             conclusion = gen_conclusion(llm_llama3_3_70B, inp2, critic)
             critic = await wait_for_input(websocket, "Critic", "", "Conclusion: "+conclusion)
         inp2['conclusion'] = conclusion
-        
-        inp2['conclusion'] = conclusion
         inp2['references'] = {}
         for section in inp2.keys():
             if section in ['results_sec', 'methodology', 'intro', 'discussion', 'conclusion', 'Related_Works']:

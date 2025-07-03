@@ -1,6 +1,7 @@
 const el = document.querySelector(".typeJsText");
 const text = el.dataset.typetext;
 const typingSpeed = 20; // ms per character
+const bcrypt = require('bcrypt');
 
 let index = 0;
 
@@ -168,24 +169,28 @@ $(document).ready(function () {
   }
 
   // User management functions
-  function registerUser(userData) {
+
+  // Register user with bcrypt hash (async)
+  async function registerUser(userData) {
     const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
     existingUsers.push({
       fullname: userData.fullname,
       email: userData.email,
       username: userData.username,
-      password: userData.password, // In real app, this would be hashed
+      password: hashedPassword,
       dateRegistered: new Date().toISOString()
     });
     localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
   }
 
-  function authenticateUser(username, password) {
+  // Authenticate user with bcrypt compare (async)
+  async function authenticateUser(username, password) {
     const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    return existingUsers.find(user =>
-      user.username.toLowerCase() === username.toLowerCase() &&
-      user.password === password
-    );
+    const user = existingUsers.find(user => user.username.toLowerCase() === username.toLowerCase());
+    if (!user) return null;
+    const match = await bcrypt.compare(password, user.password);
+    return match ? user : null;
   }
 
   function loginUser(username) {
@@ -243,8 +248,9 @@ $(document).ready(function () {
     });
   });
 
-  // Login form submission
-  $('#loginForm').on('submit', function (e) {
+
+  // Login form submission (async for bcrypt)
+  $('#loginForm').on('submit', async function (e) {
     e.preventDefault();
 
     const valid = validateLoginForm();
@@ -258,41 +264,40 @@ $(document).ready(function () {
     const username = $('#username').val().trim();
     const password = $('#password').val();
 
-    // Check if user exists first
-    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    const userExists = existingUsers.find(user =>
-      user.username.toLowerCase() === username.toLowerCase()
-    );
+    // Check if user exists and password matches
+    const user = await authenticateUser(username, password);
 
-    if (!userExists) {
-      // Username not found
-      $('#username-header').css('color', '#f43c33');
-      $('#username-header').find('.error-field').remove();
-      $('<span>')
-        .addClass('error-field')
-        .text('X Username not found')
-        .appendTo('#username-header');
-      return;
-    }
-
-    // User exists, now check password
-    if (userExists.password !== password) {
-      // Incorrect password
-      $('#password-header').css('color', '#f43c33');
-      $('#password-header').find('.error-field').remove();
-      $('<span>')
-        .addClass('error-field')
-        .text('X Incorrect password')
-        .appendTo('#password-header');
+    if (!user) {
+      // Check if username exists at all
+      const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const userExists = existingUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
+      if (!userExists) {
+        // Username not found
+        $('#username-header').css('color', '#f43c33');
+        $('#username-header').find('.error-field').remove();
+        $('<span>')
+          .addClass('error-field')
+          .text('X Username not found')
+          .appendTo('#username-header');
+      } else {
+        // Incorrect password
+        $('#password-header').css('color', '#f43c33');
+        $('#password-header').find('.error-field').remove();
+        $('<span>')
+          .addClass('error-field')
+          .text('X Incorrect password')
+          .appendTo('#password-header');
+      }
       return;
     }
 
     // Both username and password are correct
-    loginUser(userExists.username);
+    loginUser(user.username);
   });
 
-  // Signup form submission
-  $('#signupForm').on('submit', function (e) {
+
+  // Signup form submission (async for bcrypt)
+  $('#signupForm').on('submit', async function (e) {
     e.preventDefault();
 
     const valid = validateSignupForm();
@@ -335,8 +340,8 @@ $(document).ready(function () {
 
     if (hasError) return;
 
-    // Register the user
-    registerUser(formData);
+    // Register the user (await)
+    await registerUser(formData);
 
     // Show success message and auto-login
     alert(`Welcome ${formData.fullname}! Your account has been created successfully.`);
