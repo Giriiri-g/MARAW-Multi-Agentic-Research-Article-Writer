@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* scrollbar-width: thin; */
 }
 
 body {
@@ -97,6 +98,9 @@ body {
     display: flex;
     gap: 10px;
     border-top: 1px solid #F43C33;
+    box-shadow: 1px -30px 97px -27px rgba(0, 0, 0, 0.66);
+    -webkit-box-shadow: 1px -30px 97px -27px rgba(0, 0, 0, 0.66);
+    -moz-box-shadow: 1px -30px 97px -27px rgba(0, 0, 0, 0.66);
 }
 
 .input-box {
@@ -109,7 +113,7 @@ body {
     color: #fff;
     font-size: 14px;
     outline: none;
-    max-width: 85rem;
+    max-width: 1560px;
     transition: border-color 0.3s;
 }
 
@@ -117,41 +121,21 @@ body {
     border-color: #F43C33;
 }
 
-.send-retry-box{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 8%;
-    justify-content: space-between;
-    align-items: center;
-}
 
-
-
-#retry{
-    height: 45%;
-    width: 100%;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.color-1{
+.color-1 {
     color: #fff;
     background-color: #F43C33;
 }
 
-.color-2{
+.color-2 {
     color: #000;
     background-color: #56f433;
 }
 
 .send-button {
     padding: 12px 24px;
-    height: 45%;
-    width: 100%;
+    height: 100%;
+    width: 96px;
     background-color: #F43C33;
     color: #fff;
     border: none;
@@ -172,7 +156,7 @@ body {
 }
 
 .scrollbar-custom::-webkit-scrollbar {
-    width: 8px;
+    width: 2px;
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
